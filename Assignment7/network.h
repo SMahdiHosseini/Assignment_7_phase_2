@@ -12,6 +12,7 @@ class Network
 public:
     Network();  
     ~Network();
+    void check_login();
     void signup(std::string email, std::string username, std::string password, int age, bool publisher);
     void login(std::string username, std::string pasword);
     void add_film(std::string name, int year, int length, int price, std::string summary, std::string director);
@@ -22,6 +23,7 @@ public:
     void show_followers();
     void logout();
     void show_film_details(int film_id);
+    void post_money();
     void get_money();
     void search(std::map<std::string, std::string> options);
     void add_comment(int film_id, std::string content);

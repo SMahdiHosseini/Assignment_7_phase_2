@@ -134,6 +134,11 @@ int User::get_id()
     return id;
 }
 
+int User::get_money()
+{
+    return cash;
+}
+
 bool User::check_login()
 {
     return login;
@@ -169,7 +174,7 @@ void User::show_followers()
     throw Inaccessibility();
 }
 
-void User::get_money(int money)
+void User::post_money(int money)
 {
     throw Inaccessibility();
 }

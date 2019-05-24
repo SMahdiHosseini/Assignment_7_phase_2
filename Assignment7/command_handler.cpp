@@ -54,6 +54,8 @@ string_list CommandHandler::split_string(string input)
 
 void CommandHandler::detect_instruction_methode()
 {
+	if (input.size() < 2)
+		throw BadRequest();
     if(input[INSTRUCTION_TYPE_INDEX] == POST)
     {
         post_methode_instructions();
@@ -84,6 +86,10 @@ void CommandHandler::get_methode_instructions()
         network->show_followers();
         return;
     }
+	if(input[INSTRUCTION_ACTION_INDEX] == MONEY)
+	{
+		network->get_money();
+	}
     if(input[INSTRUCTION_ACTION_INDEX] == PUBLISHED)
     {
         show_films(PUBLISHED);
@@ -121,7 +127,7 @@ void CommandHandler::post_methode_instructions()
 {
 	if(input[INSTRUCTION_ACTION_INDEX] == LOGOUT)
     {
-        logout();
+        network->logout();
         return;
     }
 	if(input[INSTRUCTION_ACTION_INDEX] == DELETE_COMMENTS)
@@ -156,7 +162,7 @@ void CommandHandler::post_methode_instructions()
     }
     if(input[INSTRUCTION_ACTION_INDEX] == MONEY && find_index(SEPERATOR) == INSTRUCTION_ACTION_INDEX)
     {    
-        post_money();
+        network->post_money();
         return;
     }
     if(input[INSTRUCTION_ACTION_INDEX] == REPLIES)
@@ -190,11 +196,6 @@ void CommandHandler::post_methode_instructions()
         return;
     }
     throw BadRequest();
-}
-
-void CommandHandler::logout()
-{
-	network->logout();
 }
 
 void CommandHandler::show_notifications()
@@ -398,11 +399,6 @@ void CommandHandler::login()
         network->login(elements[USERNAME], elements[PASS]);
     else
         throw BadRequest();
-}
-
-void CommandHandler::post_money()
-{
-    network->get_money();
 }
 
 void CommandHandler::add_film()

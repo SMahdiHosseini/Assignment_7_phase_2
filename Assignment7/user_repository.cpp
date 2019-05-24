@@ -73,8 +73,6 @@ void UserRepository::login(string username, string password)
 
 void UserRepository::logout()
 {
-    if(find_logged_in_user() == nullptr)
-        throw BadRequest();
     find_logged_in_user()->logout();
 }
 
@@ -89,7 +87,7 @@ Publisher* UserRepository::find_publisher_by_id(int publisher_id)
     for (int i = 0; i < users.size(); i++)
         if(users[i]->get_id() == publisher_id && users[i]->check_publsher())
             return (Publisher*)users[i];
-    throw BadRequest();
+    throw NotFound();
 }
 
 void UserRepository::buy_film(Film* new_film, Publisher* publisher)

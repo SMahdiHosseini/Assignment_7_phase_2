@@ -17,7 +17,7 @@ public:
     virtual Film* find_published_film(int film_id);
     virtual void send_film_register_notificatioin();
     virtual void show_films(std::map<std::string, std::string> optoins);
-    virtual void get_money(int money);
+    virtual void post_money(int money);
     virtual void delete_comment(int film_id, int comment_id);
     virtual void reply_commemt(User* user, int film_id, int comment_id, std::string content);
 private:

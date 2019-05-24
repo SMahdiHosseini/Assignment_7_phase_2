@@ -13,7 +13,7 @@ Comment* CommentRepository::find_comment_by_id(int comment_id)
     for (int i = 0; i < comments.size(); i++)
         if(comments[i]->get_id() == comment_id)
             return comments[i];
-    throw Inaccessibility();
+    throw NotFound();
 }
 
 int CommentRepository::find_comment_index(int comment_id)
@@ -21,7 +21,7 @@ int CommentRepository::find_comment_index(int comment_id)
     for (int i = 0; i < comments.size(); i++)
         if(comments[i]->get_id() == comment_id)
             return i;
-    throw Inaccessibility();
+    throw NotFound();
 }
 
 void CommentRepository::delete_comment(int comment_id)

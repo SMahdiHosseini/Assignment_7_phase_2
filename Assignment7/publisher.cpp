@@ -40,7 +40,7 @@ void Publisher::show_followers()
     }
 }
 
-void Publisher::get_money(int money)
+void Publisher::post_money(int money)
 {
     cash += money;
 }

@@ -17,6 +17,7 @@ public:
 	std::string get_email();
 	std::vector<int> get_bought_films_id();
 	int get_id();
+	int get_money();
 	bool check_login();
 	bool check_publsher();
 	void logout();
@@ -43,7 +44,7 @@ public:
 	virtual Film* find_published_film(int film_id);
     virtual void show_films(std::map<std::string, std::string> optoins);
 	virtual void send_film_register_notificatioin();
-    virtual void get_money(int money);
+    virtual void post_money(int money);
     virtual void reply_commemt(User* user, int film_id, int comment_id, std::string content);
 protected:
 	std::string username;
