@@ -37,6 +37,7 @@ void User::give_notification(Notification notification)
 
 void User::buy_film(Film* new_film, Publisher* publisher)
 {
+    cash -= new_film->get_price();
     bought_films.add_film(new_film);
     send_buy_notification(publisher, new_film);
 }

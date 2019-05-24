@@ -109,14 +109,14 @@ void Film::add_comment(string content, int user_id)
     comments.add_comment(content, user_id);
 }
 
-int Film::comput_cahs()
+double Film::compute_coefficient()
 {
     if(score < 5)
-        return price * 0.8;
+        return 0.8;
     if(score >= 5 && score < 8)
-        return price * 0.9;
+        return 0.9;
     if(score >= 8)
-        return price * 0.95;
+        return 0.95;
 }
 
 string Film::show()

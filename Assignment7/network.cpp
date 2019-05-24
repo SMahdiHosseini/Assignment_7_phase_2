@@ -8,7 +8,9 @@ using namespace std;
 
 Network::Network()
 {
-    users = new UserRepository(); 
+    admin = new User(0, "", "admin", "admin", 0, false);
+    admin->logout();
+    users = new UserRepository();
     films = new FilmRepository();
 }
 
@@ -27,7 +29,7 @@ User* Network::find_logged_in_user()
 
 void Network::check_login()
 {
-    if (users->find_logged_in_user() == nullptr)
+    if(users->find_logged_in_user() == nullptr)
         throw Inaccessibility();
 }
 
@@ -38,12 +40,21 @@ bool Network::check_existed_user(string username)
 
 void Network::signup(string email, string username, string password, int age, bool publisher)
 {
+    if(admin->check_login() || username == "admin")
+        throw BadRequest();
     users->signup(email, username, password, age, publisher);
     cout << "OK\n";
 }
 
 void Network::login(string username, string password)
 {
+    if(admin->check_login())
+        throw BadRequest();
+    if(username == "admin" && password == "admin")
+    {
+        admin->login_user();
+        return;
+    } 
     users->login(username, password);
     cout << "OK\n";
 }
@@ -56,6 +67,11 @@ void Network::logout()
     }
     catch(Inaccessibility e)
     {
+        if(admin->check_login())
+        {
+            admin->logout();
+            return;
+        }
         throw BadRequest();
     }
     users->logout();
@@ -103,7 +119,20 @@ void Network::post_money()
 
 void Network::get_money()
 {
-    cout << find_logged_in_user()->get_money();
+    if (admin->check_login())
+    {
+        cout << (int) (network_money() * 100.0) / 100.0 << endl;
+        return;
+    }
+    cout << find_logged_in_user()->get_money() << endl;
+}
+
+int Network::network_money()
+{
+    int admin_money = admin->get_money();
+    for(auto& money: cash)
+        admin_money += money.second; 
+    return admin_money;
 }
 
 void Network::reply_comment(int film_id, int comment_id, std::string content)
@@ -141,9 +170,12 @@ void Network::buy_film(int film_id)
     cout << "OK\n";
 }
 
-int Network::compute_cash(int film_id)
+double Network::compute_cash(int film_id)
 {
-    return films->find_film_by_id(film_id)->comput_cahs();
+    double coefficient = films->find_film_by_id(film_id)->compute_coefficient();
+    int price = films->find_film_by_id(film_id)->get_price();
+    admin->increase_money(price * (1 - coefficient));
+    return price * coefficient;
 }
 
 void Network::rate_film(int film_id, int score)

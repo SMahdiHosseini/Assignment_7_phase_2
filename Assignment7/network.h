@@ -35,13 +35,15 @@ public:
     void show_notifications(int limit);
     void show_published_film(std::map<std::string, std::string> options);
     void show_bought_films(std::map<std::string, std::string> options);
-    int compute_cash(int film_id);
+    double compute_cash(int film_id);
+    int network_money();
     bool check_existed_user(std::string username);
     User* find_logged_in_user();
 private:
+    User* admin;
     UserRepository* users;    
     FilmRepository* films;
-    std::map<std::string, int> cash;
+    std::map<std::string, double> cash;
 };
 
 #endif

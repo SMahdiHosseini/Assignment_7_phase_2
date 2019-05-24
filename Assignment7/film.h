@@ -15,7 +15,7 @@ public:
     std::string get_director();
     std::string show();
     int get_year();
-    int comput_cahs();
+    double compute_coefficient();
     int get_id();
     int get_length();
     int get_price();

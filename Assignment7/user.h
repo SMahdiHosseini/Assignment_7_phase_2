@@ -53,7 +53,7 @@ protected:
 	int id;
 	bool login;
 	bool publisher;
-	int cash;
+	double cash;
 	int age;
 	FilmRepository bought_films;
 	NotificationRepository notifications; 

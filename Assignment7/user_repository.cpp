@@ -45,8 +45,11 @@ void UserRepository::signup(string email, string username, string password, int 
     if(check_existed_user(username) || find_logged_in_user() != nullptr)
         throw BadRequest();
     last_id++;
-    if(publisher)        
+    if(publisher)
+    {
         add_publisher(email, username, password, age, publisher);
+        return;
+    }
     User* new_user = new User(last_id,email, username, password, age, publisher);
     users.push_back(new_user);
 }
