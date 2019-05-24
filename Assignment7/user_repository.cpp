@@ -42,11 +42,9 @@ User* UserRepository::find_logged_in_user()
 
 void UserRepository::signup(string email, string username, string password, int age, bool publisher)
 {
-    if(check_existed_user(username))
+    if(check_existed_user(username) || find_logged_in_user() != nullptr)
         throw BadRequest();
     last_id++;
-    if(find_logged_in_user() != nullptr)
-        find_logged_in_user()->logout();
     if(publisher)        
         add_publisher(email, username, password, age, publisher);
     User* new_user = new User(last_id,email, username, password, age, publisher);
@@ -68,10 +66,16 @@ bool UserRepository::check_publisher()
 
 void UserRepository::login(string username, string password)
 {
-    if(find_user(username, password) == nullptr)
+    if(find_user(username, password) == nullptr || find_logged_in_user() != nullptr)
+        throw BadRequest();
+    find_user(username, password)->login_user();
+}
+
+void UserRepository::logout()
+{
+    if(find_logged_in_user() == nullptr)
         throw BadRequest();
     find_logged_in_user()->logout();
-    find_user(username, password)->login_user();
 }
 
 void UserRepository::follow_publisher(int publisher_id)

@@ -20,6 +20,7 @@ public:
     void follow(int publisher_id);
     void buy_film(int film_id);
     void show_followers();
+    void logout();
     void show_film_details(int film_id);
     void get_money();
     void search(std::map<std::string, std::string> options);

@@ -119,6 +119,11 @@ void CommandHandler::put_methode_instructions()
 
 void CommandHandler::post_methode_instructions()
 {
+	if(input[INSTRUCTION_ACTION_INDEX] == LOGOUT)
+    {
+        logout();
+        return;
+    }
 	if(input[INSTRUCTION_ACTION_INDEX] == DELETE_COMMENTS)
     {
         delete_comment();
@@ -185,6 +190,11 @@ void CommandHandler::post_methode_instructions()
         return;
     }
     throw BadRequest();
+}
+
+void CommandHandler::logout()
+{
+	network->logout();
 }
 
 void CommandHandler::show_notifications()

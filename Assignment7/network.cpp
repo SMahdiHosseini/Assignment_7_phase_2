@@ -42,6 +42,12 @@ void Network::login(string username, string password)
     cout << "OK\n";
 }
 
+void Network::logout()
+{
+    users->logout();
+    cout << "OK\n";
+}
+
 void Network::add_film(string name, int year, int length, int price, string summary, string director)
 {
     find_logged_in_user()->add_film(films->add_new_film(find_logged_in_user()->get_id(), name, year, length, price, summary, director));

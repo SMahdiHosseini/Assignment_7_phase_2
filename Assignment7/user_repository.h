@@ -19,6 +19,7 @@ public:
     void add_existed_publisher(Publisher* publisher);
     void follow_publisher(int publisher_id);
     void login(std::string username, std::string pasword);
+    void logout();
     void buy_film(Film* new_film, Publisher* publisher);
     bool check_existed_user(std::string username);
     bool check_publisher();

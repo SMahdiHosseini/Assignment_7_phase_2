@@ -18,6 +18,7 @@ public:
     void reply_comment();
     void follow();
     void run();
+    void logout();
     void edit_film();
     void increase_money();
     void post_money();
