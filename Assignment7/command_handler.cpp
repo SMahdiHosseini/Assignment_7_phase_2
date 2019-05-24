@@ -109,31 +109,31 @@ void CommandHandler::get_methode_instructions()
 
 void CommandHandler::delete_methode_instructions()
 {
-    if(input[INSTRUCTION_ACTION_INDEX] == FILMS)
-    {
-        delete_film();
-        return;
-    }
-    if(input[INSTRUCTION_ACTION_INDEX] == COMMENTS)
-    {
-        delete_comment();
-        return;
-    }
     throw BadRequest();
 }
 
 void CommandHandler::put_methode_instructions()
 {
-    if(input[INSTRUCTION_ACTION_INDEX] == FILMS)
-    {
-        edit_film();
-        return;
-    }
     throw BadRequest();
 }
 
 void CommandHandler::post_methode_instructions()
 {
+	if(input[INSTRUCTION_ACTION_INDEX] == DELETE_COMMENTS)
+    {
+        delete_comment();
+        return;
+    }
+	if(input[INSTRUCTION_ACTION_INDEX] == DELETE_FILMS)
+    {
+        delete_film();
+        return;
+    }
+	if(input[INSTRUCTION_ACTION_INDEX] == PUT_FILMS)
+    {
+        edit_film();
+        return;
+    }
     if(input[INSTRUCTION_ACTION_INDEX] == SIGNUP)
     {
         signup();

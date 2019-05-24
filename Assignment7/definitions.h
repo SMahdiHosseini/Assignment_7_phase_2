@@ -41,4 +41,7 @@
 #define PUBLISHED "published"
 #define PURCHASED "purchased"
 #define NOTIFICATIONS "notifications"
+#define PUT_FILMS "put_films"
+#define DELETE_FILMS "delete_films"
+#define DELETE_COMMENTS "delete_comments"
 #endif
