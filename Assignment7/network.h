@@ -36,7 +36,7 @@ public:
     void show_published_film(std::map<std::string, std::string> options);
     void show_bought_films(std::map<std::string, std::string> options);
     double compute_cash(int film_id);
-    int network_money();
+    double network_money();
     bool check_existed_user(std::string username);
     User* find_logged_in_user();
 private:

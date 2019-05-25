@@ -50,10 +50,18 @@ void Network::login(string username, string password)
 {
     if(admin->check_login())
         throw BadRequest();
-    if(username == "admin" && password == "admin")
+    try
     {
-        admin->login_user();
-        return;
+        check_login();
+    }
+    catch(Inaccessibility e)
+    {
+        if(username == "admin" && password == "admin")
+        {
+            admin->login_user();
+            cout << "OK\n";
+            return;
+        }
     } 
     users->login(username, password);
     cout << "OK\n";
@@ -70,6 +78,7 @@ void Network::logout()
         if(admin->check_login())
         {
             admin->logout();
+            cout << "OK\n";
             return;
         }
         throw BadRequest();
@@ -114,6 +123,7 @@ void Network::show_followers()
 void Network::post_money()
 {
     find_logged_in_user()->post_money(cash[find_logged_in_user()->get_username()]);
+    cash[find_logged_in_user()->get_username()] = 0;
     cout << "OK\n";
 }
 
@@ -121,15 +131,15 @@ void Network::get_money()
 {
     if (admin->check_login())
     {
-        cout << (int) (network_money() * 100.0) / 100.0 << endl;
+        cout << network_money() << endl;
         return;
     }
     cout << find_logged_in_user()->get_money() << endl;
 }
 
-int Network::network_money()
+double Network::network_money()
 {
-    int admin_money = admin->get_money();
+    double admin_money = admin->get_money();
     for(auto& money: cash)
         admin_money += money.second; 
     return admin_money;

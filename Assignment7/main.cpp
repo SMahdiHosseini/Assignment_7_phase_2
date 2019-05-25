@@ -6,5 +6,5 @@ int main()
 {
     CommandHandler* netflix = new CommandHandler();
     netflix->run();
-    netflix->~CommandHandler();
+    // netflix->~CommandHandler();
 }

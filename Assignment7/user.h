@@ -17,7 +17,7 @@ public:
 	std::string get_email();
 	std::vector<int> get_bought_films_id();
 	int get_id();
-	int get_money();
+	double get_money();
 	bool check_login();
 	bool check_publsher();
 	void logout();
@@ -27,7 +27,7 @@ public:
 	void show_notifications(int limit);
 	void show_bought_films(std::map<std::string, std::string> options);
 	void follow_publisher(Publisher* new_pubisher);
-	void increase_money(int amount);
+	void increase_money(double amount);
 	void buy_film(Film* neW_film, Publisher* publisher);
 	void rate_film(int film_id, int score, Publisher* publisher);
 	void add_comment(int film_id, std::string content, Publisher* publisher);

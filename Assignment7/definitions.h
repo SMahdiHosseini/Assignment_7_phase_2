@@ -5,6 +5,8 @@
 #define INSTRUCTION_ACTION_INDEX 1
 #define INSTRUCTION_SEPERATOR_INDEX 2
 #define RECOM_NUM 4
+#define DELETED -1
+ 
 #define POST "POST"
 #define DELETE "DELETE"
 #define GET "GET"

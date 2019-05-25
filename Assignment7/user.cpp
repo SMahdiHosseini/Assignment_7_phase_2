@@ -100,7 +100,7 @@ void User::show_notifications(int limit)
     notifications.show_notifications(limit);
 }
 
-void User::increase_money(int amount)
+void User::increase_money(double amount)
 {
     cash += amount;
 }
@@ -135,7 +135,7 @@ int User::get_id()
     return id;
 }
 
-int User::get_money()
+double User::get_money()
 {
     return cash;
 }

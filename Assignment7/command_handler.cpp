@@ -89,6 +89,7 @@ void CommandHandler::get_methode_instructions()
 	if(input[INSTRUCTION_ACTION_INDEX] == MONEY)
 	{
 		network->get_money();
+		return;
 	}
     if(input[INSTRUCTION_ACTION_INDEX] == PUBLISHED)
     {
