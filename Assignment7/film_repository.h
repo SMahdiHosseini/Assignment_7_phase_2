@@ -22,7 +22,6 @@ public:
     void show_films(std::map<std::string, std::string> optiions);
     void show_film_details(int film_id);
     void show_recommend_film(std::vector<int> bought_films_id, int film_id);
-    void sort_by_id(std::vector<std::pair<wieght, id>> pairs);
     std::vector<std::pair<wieght, id>> sort_pairs_by_weight(int film_id);
     std::vector<int> in_range_films_id(std::map<std::string, std::string> optiions);
     std::vector<int> get_films_id();

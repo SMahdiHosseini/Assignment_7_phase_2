@@ -43,12 +43,6 @@ void FilmRepository::update_matrix_buy_film(int bought_films_id, vector<int> fil
             films_matrix[films_id[i]][bought_films_id]++;
         }
     }
-    for (auto& x: films_matrix)
-    {
-        for (auto& y : x.second)
-            cout << y.second << "  ";
-        cout << endl;
-    }
 }
 
 void FilmRepository::update_matrix_add_film(int film_id)
@@ -148,6 +142,16 @@ void FilmRepository::show_film_details(int film_id)
      cout << find_film_by_id(film_id)->show_details();
 }
 
+
+bool sortbysec(const pair<int,int> &first_pair,const pair<int,int> &second_pair) 
+{
+    if(first_pair.first < second_pair.first)
+        return true;
+    if(first_pair.first > second_pair.first)
+        return false;
+    return (first_pair.second > second_pair.second);
+}
+
 vector<pair<int, int>> FilmRepository::sort_pairs_by_weight(int film_id)
 {
     vector<pair<int, int>> sort_by_weight;
@@ -156,9 +160,18 @@ vector<pair<int, int>> FilmRepository::sort_pairs_by_weight(int film_id)
         if(films_matrix[related_films.first][related_films.first] != DELETED)
             sort_by_weight.push_back(pair<int, int> (related_films.second, related_films.first));
     }
-    sort(sort_by_weight.begin(), sort_by_weight.end());
+    sort(sort_by_weight.begin(), sort_by_weight.end(), sortbysec);
     return sort_by_weight;
 }
+
+// bool FilmRepository::sort_by_id(const pair<int, int>& first_pair, const pair<int, int>& second_pair)
+// {
+//     if(first_pair.first < second_pair.first)
+//         return true;
+//     if(first_pair.first > second_pair.first)
+//         return false;
+//     return (first_pair.second < second_pair.second);
+// }
 
 bool FilmRepository::existed(vector<int> bought_films_id, int id)
 {
