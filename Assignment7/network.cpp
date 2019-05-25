@@ -167,6 +167,7 @@ void Network::buy_film(int film_id)
     Film* film = films->find_film_by_id(film_id);
     users->buy_film(film, users->find_publisher_by_id(film->get_publisher_id()));
     cash[users->find_publisher_by_id(films->find_film_by_id(film_id)->get_publisher_id())->get_username()] += compute_cash(film_id);
+    films->update_matrix_buy_film(films->find_film_by_id(film_id)->get_id(), find_logged_in_user()->get_bought_films_id());
     cout << "OK\n";
 }
 
@@ -221,5 +222,5 @@ void Network::show_film_details(int film_id)
 {
     check_login();
     films->show_film_details(film_id);
-    films->show_recomend_film(find_logged_in_user()->get_bought_films_id(), film_id);
+    films->show_recommend_film(find_logged_in_user()->get_bought_films_id(), film_id);
 }

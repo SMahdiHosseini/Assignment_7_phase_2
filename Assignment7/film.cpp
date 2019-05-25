@@ -140,7 +140,7 @@ string Film::show_details()
     return details;
 }
 
-string Film::show_recomend()
+string Film::show_recommend()
 {
     return to_string(id) + " | " + name + " | " + to_string(length) + " | " + director + "\n";
 }
