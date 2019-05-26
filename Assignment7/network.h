@@ -6,6 +6,7 @@
 #include "user.h"
 #include "user_repository.h"
 #include "film_repository.h"
+#include "network_film_repository.h"
 
 class Network
 {
@@ -42,7 +43,7 @@ public:
 private:
     User* admin;
     UserRepository* users;    
-    FilmRepository* films;
+    NetworkFilmRepository* films;
     std::map<std::string, double> cash;
 };
 

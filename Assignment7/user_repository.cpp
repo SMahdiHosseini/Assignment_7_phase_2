@@ -10,11 +10,6 @@ UserRepository::UserRepository()
     last_id = 0;
 }
 
-UserRepository::~UserRepository()
-{
-    for (int i = users.size() - 1; i >= 0; i--)
-        delete users[i];
-}
 
 bool UserRepository::check_existed_user(string username)
 {

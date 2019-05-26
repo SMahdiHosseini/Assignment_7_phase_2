@@ -11,7 +11,7 @@ Network::Network()
     admin = new User(0, "", "admin", "admin", 0, false);
     admin->logout();
     users = new UserRepository();
-    films = new FilmRepository();
+    films = new NetworkFilmRepository();
 }
 
 Network::~Network()

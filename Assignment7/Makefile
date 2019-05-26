@@ -2,8 +2,8 @@ CC := g++
 
 all: a.out
 
-a.out: main.o user.o publisher.o comment.o network.o command_handler.o film.o user_repository.o film_repository.o comment_repository.o exception.o notification.o validity.o notification_repository.o
-	$(CC) main.o user.o publisher.o comment.o network.o command_handler.o film.o user_repository.o film_repository.o comment_repository.o exception.o notification.o validity.o notification_repository.o -o a.out
+a.out: main.o user.o publisher.o comment.o network.o command_handler.o film.o user_repository.o film_repository.o comment_repository.o exception.o notification.o validity.o notification_repository.o network_film_repository.o
+	$(CC) main.o user.o publisher.o comment.o network.o command_handler.o film.o user_repository.o film_repository.o comment_repository.o exception.o notification.o validity.o notification_repository.o network_film_repository.o -o a.out
 
 main.o: main.cpp command_handler.h 
 	$(CC) -c main.cpp -o main.o
@@ -31,6 +31,9 @@ user_repository.o: user_repository.cpp user_repository.h user.h
 
 film_repository.o: film_repository.cpp film_repository.h film.h
 	$(CC) -c film_repository.cpp -o film_repository.o
+
+network_film_repository.o: network_film_repository.cpp network_film_repository.h film_repository.h
+	$(CC) -c network_film_repository.cpp -o network_film_repository.o
 
 comment_repository.o: comment_repository.cpp comment_repository.h comment.h
 	$(CC) -c comment_repository.cpp -o comment_repository.o

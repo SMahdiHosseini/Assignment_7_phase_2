@@ -13,7 +13,7 @@ class UserRepository
 {
 public:
     UserRepository();
-    ~UserRepository();
+    // ~UserRepository();
     void signup(std::string email, std::string username, std::string password, int age, bool publisher);
     void add_publisher(std::string email, std::string username, std::string password, int age, bool publisher);
     void add_existed_publisher(Publisher* publisher);
