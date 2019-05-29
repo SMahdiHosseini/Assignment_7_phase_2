@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <div style="padding: 3%; margin: auto; border-radius: 5px; max-width: 1000px;">
+        <form action="/signup" method="POST">
+
+            <label>Email</label>
+            <div class="input-group" style="margin-bottom: 30px">
+                <span class="input-group-addon">@</span>
+                <input id="email" type="text" class="form-control" name="email" placeholder="Email">
+            </div>
+
+            <label>Username</label>
+            <div class="input-group" style="margin-bottom: 30px">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input id="username" type="text" class="form-control" name="username" placeholder="username">
+            </div>
+
+            <label>Password</label>
+            <div class="input-group" style="margin-bottom: 30px">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+            </div>
+
+            <label>Password</label>
+            <div class="input-group" style="margin-bottom: 30px">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input id="retry password" type="password" class="form-control" name="retry password" placeholder="retry Password">
+            </div>
+
+            <label>Age</label>
+            <div class="input-group" style="margin-bottom: 30px;">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span>
+                <input id="age" type="age" class="form-control" name="age" placeholder="age">
+            </div>
+
+
+            <label>Publisher?</label>
+            <div class="input-group" style="margin-bottom: 30px;">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                <input id="publisher" type="publisher" class="form-control" name="publisher" placeholder="publisher">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-left: 400px; background-color: red; margin-top: 30px; padding: 5px; display: block">Submit</button>
+
+        </form>
+    </div>
+</body>
+
+</html>
