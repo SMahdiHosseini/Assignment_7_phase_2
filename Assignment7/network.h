@@ -26,7 +26,7 @@ public:
     void show_film_details(int film_id);
     void post_money();
     void get_money();
-    void search(std::map<std::string, std::string> options);
+    std::vector<std::vector<std::strnig>> search(std::map<std::string, std::string> options);
     void add_comment(int film_id, std::string content);
     void rate_film(int film_id, int score);
     void increase_money(int amount);
@@ -34,8 +34,8 @@ public:
     void delete_comment(int film_id, int comment_id);
     void show_unread_notificatioins();
     void show_notifications(int limit);
-    void show_published_film(std::map<std::string, std::string> options);
-    void show_bought_films(std::map<std::string, std::string> options);
+    std::vector<std::vector<std::string>> show_published_film(std::map<std::string, std::string> options);
+    std::vector<std::vector<std::string>> show_bought_films(std::map<std::string, std::string> options);
     double compute_cash(int film_id);
     double network_money();
     bool check_existed_user(std::string username);

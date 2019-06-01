@@ -119,10 +119,17 @@ double Film::compute_coefficient()
         return 0.95;
 }
 
-string Film::show()
+vector<string> Film::show()
 {
-    return to_string(id) + " | " + name + " | " + to_string(length) + " | " + 
-    to_string(price) + " | " + to_string((int) ((score * 100.0) / 100.0)) + " | " + to_string(year) + " | " + director;
+    vector<string> show;
+    show.push_back(to_string(id));
+    show.push_back(name);
+    show.push_back(to_string(length)); 
+    show.pop_back(to_string(price));
+    show.pop_back(to_string((int) ((score * 100.0) / 100.0)));
+    show.push_back(to_string(year));
+    show.push_back(director);
+    return show;
 }
 
 string Film::show_details()

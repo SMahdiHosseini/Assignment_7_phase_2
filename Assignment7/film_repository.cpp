@@ -75,13 +75,19 @@ vector<int> FilmRepository::in_range_films_id(map<string, string> options)
     return films_id_to_show;
 }
 
-void FilmRepository::show_films(map<string, string> options)
+vector<vector<string>> FilmRepository::show_films(map<string, string> options)
 {
     cout << "#. Film Id | Film Name | Film Length | Film price | Rate | Production Year | Film Director\n";
     vector<int> films_id_to_show = in_range_films_id(options);
+    vector<vector<string>> films_to_show;
     sort(films_id_to_show.begin(), films_id_to_show.end());
     for (int i = 0; i < films_id_to_show.size(); i++)
-        cout << i + 1 << ". " << find_film_by_id(films_id_to_show[i])->show() << "\n";
+    {
+        films_to_show.push_back(find_film_by_id(films_id_to_show[i])->show());
+        cout << i + 1 << ". " << films_to_show[i][0] + " | " + films_to_show[i][1] + " | " + films_to_show[i][2] + " | " + films_to_show[i][3] + " | " +
+                                films_to_show[i][4] + " | " + films_to_show[i][5] + " | " + films_to_show[i][6] + " | " +"\n";
+    }
+    return films_to_show;
 }
 
 vector<int> FilmRepository::get_films_id()

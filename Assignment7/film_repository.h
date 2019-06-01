@@ -12,7 +12,7 @@ class FilmRepository
 public:
     FilmRepository();
     // ~FilmRepository();
-    void show_films(std::map<std::string, std::string> optiions);
+    std::vector<std::vector<std::string>> show_films(std::map<std::string, std::string> optiions);
     void add_film(Film* film);
     virtual void delete_film(int film_id);
     bool check_film_exists(int film_id);  

@@ -13,7 +13,7 @@ public:
     std::string get_name();
     std::string get_summary();
     std::string get_director();
-    std::string show();
+    std::vector<std::string> show();
     int get_year();
     double compute_coefficient();
     int get_id();

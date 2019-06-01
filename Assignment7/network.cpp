@@ -212,9 +212,9 @@ void Network::show_notifications(int limit)
     find_logged_in_user()->show_notifications(limit);
 }
 
-void Network::show_published_film(map<string, string> options)
+vector<vector<string>> Network::show_published_film(map<string, string> options)
 {
-    find_logged_in_user()->show_films(options);
+    return find_logged_in_user()->show_films(options);
 }
 
 void Network::show_bought_films(map<string, string> options)
@@ -222,7 +222,7 @@ void Network::show_bought_films(map<string, string> options)
     find_logged_in_user()->show_bought_films(options);
 }
 
-void Network::search(map<string, string> options)
+vector<vector<string>> Network::search(map<string, string> options)
 {
     check_login();
     films->show_films(options);
