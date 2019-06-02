@@ -17,7 +17,7 @@ Response* LogoutHandler::callback(Request* req)
     return Response::redirect("/");
 }
 
-LoginHandler::LoginHandler(Network* _network) : network(_network)
+LoginHandler::LoginHandler(Network* _network) : show(_network)
 {
 }
 
@@ -30,8 +30,8 @@ Response* LoginHandler::callback(Request* req)
     {
         try
         {
-            network->login(elements["username"], elements["password"]);
-            return show_films();
+            show.network->login(elements["username"], elements["password"]);
+            return show.show_films();
         }
         catch(...)
         {
@@ -42,15 +42,16 @@ Response* LoginHandler::callback(Request* req)
         throw Server::Exception("Bad request");        
 }
 
-Response* LoginHandler::show_films()
+Response* Show::show_films()
 {
     map<string, string> options;
+    vector<vector<string>> films;
     if(network->find_logged_in_user()->check_publsher() == true)
-        vector<vector<string>> films = network->show_published_film(options);
+        films = network->show_published_film(options);
     else
     {
         options["price"] = network->find_logged_in_user()->get_money();
-        vector<vector<string>> films =network->search(options);
+        films = network->search(options);
     }
     Response *res = new Response;
     res->setHeader("Content-Type", "text/html");
@@ -136,9 +137,41 @@ Response* SignupHandler::callback(Request* req)
     {   
         try
         {
-            network->signup(elements["email"], elements["username"], elements["password"], 
+            show.network->signup(elements["email"], elements["username"], elements["password"], 
                         stoi(elements["age"]), valid.check_publisher(elements["publisher"]));
-            return show_films();
+            return show.show_films();
+        }
+        catch(...)
+        {
+            throw Server::Exception("Bad request");    
+        }
+    }
+    else
+        throw Server::Exception("Bad request");
+}
+
+FilmHandler::FilmHandler(Network* _network) : show(_network)
+{
+}
+
+Response* FilmHandler::callback(Request* req)
+{
+    map<string, string> elements;
+    elements["name"]= req->getBodyParam("name");
+    elements["director"] = req->getBodyParam("director");
+    elements["length"] = req->getBodyParam("length");
+    elements["summary"] = req->getBodyParam("summary");
+    elements["rate"] = req->getBodyParam("rate");
+    elements["year"] = req->getBodyParam("year");
+    elements["rate"] = req->getBodyParam("rate");
+    elements["price"] = req->getBodyParam("price");
+    if(valid.add_film_validity(elements))
+    {   
+        try
+        {
+            show.network->add_film(elements["name"], stoi(elements["year"]), stoi(elements["length"]), 
+                                stoi(elements["price"]), elements["summary"], elements["deirector"]);
+            return show.show_films();
         }
         catch(...)
         {

@@ -23,6 +23,9 @@ int main(int argc, char const *argv[])
         server.get("/signup", new ShowPage("static/signup.html"));
         server.post("/signup", new SignupHandler(network));
 
+        server.get("/add_film", new ShowPage("static/add_film.html"));
+        server.post("/add_film", new FilmHandler(network));
+
         server.post("/logout", new LogoutHandler(network));
 
         // server.get("/home", new ShowPage("static/home_page.html"));

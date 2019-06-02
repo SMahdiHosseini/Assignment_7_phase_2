@@ -5,6 +5,14 @@
 #include "../Assignment7/validity.h"
 #include "../Assignment7/network.h"
 
+class Show
+{
+public:
+  Show(Network* _network);
+  Response* show_films();
+  Network* network;
+};
+
 class LogoutHandler: public RequestHandler
 {
 public:
@@ -14,21 +22,31 @@ private:
   Network* network;
 };
 
-class LoginHandler : public RequestHandler {
+class LoginHandler : public RequestHandler 
+{
 public:
   LoginHandler(Network* _network);
   Response* callback(Request *);
-  Response* show_published_films(std::map<std::string, std::string> optoins);
-  Response* show_film();
 protected:
-  Network* network;
+  Show show;
   Validity valid;
 };
 
-class SignupHandler : public LoginHandler {
+class SignupHandler : public LoginHandler 
+{
 public:
   SignupHandler(Network* _network);
   Response* callback(Request* req);
+};
+
+class FilmHandler : public RequestHandler 
+{
+public:
+  FilmHandler(Network* _network);
+  Response* callback(Request* req);
+private:
+  Show show;
+  Validity valid;
 };
 
 
