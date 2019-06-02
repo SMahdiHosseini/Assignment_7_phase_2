@@ -5,10 +5,19 @@
 #include "../Assignment7/validity.h"
 #include "../Assignment7/network.h"
 
+class LogoutHandler: public RequestHandler
+{
+public:
+  LogoutHandler(Network* _network);
+  Response* callback(Request*);
+private:
+  Network* network;
+};
+
 class LoginHandler : public RequestHandler {
 public:
   LoginHandler(Network* _network);
-  Response *callback(Request *);
+  Response* callback(Request *);
   Response* show_published_films(std::map<std::string, std::string> optoins);
   Response* show_film();
 protected:

@@ -7,11 +7,17 @@
 
 using namespace std;
 
-LoginHandler::LoginHandler(Network* _network) : network(_network)
+LogoutHandler::LogoutHandler(Network* _network) : network(_network)
 {
 }
 
-SignupHandler::SignupHandler(Network* _network) : LoginHandler(_network)
+Response* LogoutHandler::callback(Request* req)
+{
+    network->logout();
+    return Response::redirect("/");
+}
+
+LoginHandler::LoginHandler(Network* _network) : network(_network)
 {
 }
 
@@ -23,7 +29,22 @@ Response* LoginHandler::show_film()
 
 Response* LoginHandler::callback(Request* req)
 {
-
+    map<string, string> elements;
+    elements["username"]= req->getBodyParam("username");
+    elements["password"] = req->getBodyParam("password");
+    if (valid.login_validity(elements))
+    {
+        network->login(elements["username"], elements["password"]);
+        if(network->find_logged_in_user()->check_publsher() == true)
+        {
+            map<string, string> temp;
+            return show_published_films(temp);
+        }
+        else
+           return show_film();        
+    }
+    else
+        throw Server::Exception("Bad request");        
 }
 
 Response* LoginHandler::show_published_films(map<string, string> options)
@@ -38,6 +59,13 @@ Response* LoginHandler::show_published_films(map<string, string> options)
         <<"    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css'>" << endl
         <<"</head>" << endl
         <<"<body>" << endl
+        << "    <nav class='navbar navbar-expand-sm bg-dark navbar-dark fixed-top'>" << endl
+        << "        <ul class='navbar-nav'>" << endl
+        << "            <li class='nav-item'>" << endl
+        << "                <form action='/logout' method='POST'><button class='btn btn-danger' type='submit'>Logout</button></form>" << endl
+        << "            </li>" << endl
+        << "        </ul>" << endl
+        << "    </nav>" << endl
         <<"    <form action='/home' method='POST'>" << endl
         <<"        <div class='input-group' style='padding-left: 30%; padding-top: 5%; max-width: 70%;'>" << endl
         <<"            <span class='input-group-btn'>" << endl
@@ -86,6 +114,11 @@ Response* LoginHandler::show_published_films(map<string, string> options)
         <<"</html>" << endl;
     res->setBody(body.str());
     return res;
+}
+
+
+SignupHandler::SignupHandler(Network* _network) : LoginHandler(_network)
+{
 }
 
 Response* SignupHandler::callback(Request* req)
