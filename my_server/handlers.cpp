@@ -21,12 +21,6 @@ LoginHandler::LoginHandler(Network* _network) : network(_network)
 {
 }
 
-Response* LoginHandler::show_film()
-{
-
-}
-
-
 Response* LoginHandler::callback(Request* req)
 {
     map<string, string> elements;
@@ -34,22 +28,30 @@ Response* LoginHandler::callback(Request* req)
     elements["password"] = req->getBodyParam("password");
     if (valid.login_validity(elements))
     {
-        network->login(elements["username"], elements["password"]);
-        if(network->find_logged_in_user()->check_publsher() == true)
+        try
         {
-            map<string, string> temp;
-            return show_published_films(temp);
+            network->login(elements["username"], elements["password"]);
+            return show_films();
         }
-        else
-           return show_film();        
+        catch(...)
+        {
+            throw Server::Exception("Bad request");
+        }
     }
     else
         throw Server::Exception("Bad request");        
 }
 
-Response* LoginHandler::show_published_films(map<string, string> options)
+Response* LoginHandler::show_films()
 {
-    vector<vector<string>> films = network->show_published_film(options);
+    map<string, string> options;
+    if(network->find_logged_in_user()->check_publsher() == true)
+        vector<vector<string>> films = network->show_published_film(options);
+    else
+    {
+        options["price"] = network->find_logged_in_user()->get_money();
+        vector<vector<string>> films =network->search(options);
+    }
     Response *res = new Response;
     res->setHeader("Content-Type", "text/html");
     ostringstream body;
@@ -131,16 +133,17 @@ Response* SignupHandler::callback(Request* req)
     elements["publisher"] = req->getBodyParam("publisher");
     string retry_pass = req->getBodyParam("retry_password");
     if(valid.signup_validity(elements) && retry_pass == elements["password"])
-    {
-        network->signup(elements["email"], elements["username"], elements["password"], 
-                        stoi(elements["age"]), valid.check_publisher(elements["publisher"]));
-        if(elements["publisher"] == "true")
+    {   
+        try
         {
-            map<string, string> temp;
-            return show_published_films(temp);
+            network->signup(elements["email"], elements["username"], elements["password"], 
+                        stoi(elements["age"]), valid.check_publisher(elements["publisher"]));
+            return show_films();
         }
-        else
-           return show_film();
+        catch(...)
+        {
+            throw Server::Exception("Bad request");    
+        }
     }
     else
         throw Server::Exception("Bad request");
