@@ -12,7 +12,7 @@
             <label>Email</label>
             <div class="input-group" style="margin-bottom: 30px">
                 <span class="input-group-addon">@</span>
-                <input id="email" type="text" class="form-control" name="email" placeholder="email">
+                <input id="email" type="email" class="form-control" name="email" placeholder="email">
             </div>
 
             <label>Username</label>
@@ -36,14 +36,14 @@
             <label>Age</label>
             <div class="input-group" style="margin-bottom: 30px;">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span>
-                <input id="age" type="age" class="form-control" name="age" placeholder="age">
+                <input id="age" type="number" class="form-control" name="age" placeholder="age">
             </div>
 
 
             <label>Publisher?</label>
             <div class="input-group" style="margin-bottom: 30px;">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                <input id="publisher" type="text" class="form-control" name="publisher" placeholder="publisher">
+                <input id="publisher" type="radio" class="form-control" name="publisher" value="true">True<br>
+                <input id="publisher" type="radio" class="form-control" name="publisher" value="false">False<br>
             </div>
 
             <button type="submit" class="btn btn-primary" style="margin-left: 400px; background-color: red; margin-top: 30px; padding: 5px; display: block">Submit</button>
