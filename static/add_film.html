@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+        <ul class="navbar-nav">
+            <li class="nav-item"></li>
+            <form action="/logout" method="POST"><button class="btn btn-danger" type="submit">Logout</button></form>
+            </li>
+        </ul>
+    </nav>
+
+    <div style="padding: 3%; margin: auto; border-radius: 5px; max-width: 1000px;">
+        <form action="/add_film" method="POST">
+
+            <label>Name</label>
+            <div class="input-group" style="margin-bottom: 30px">
+                <span class="input-group-addon"><i class="fas fa-file"></i></span>
+                <input id="name" type="text" class="form-control" name="name" placeholder="name">
+            </div>
+
+            <label>Rate</label>
+            <div class="input-group" style="margin-bottom: 30px">
+                <span class="input-group-addon"><i class="fas fa-cloud"></i></span>
+                <input id="rate" type="number" class="form-control" name="rate" placeholder="rate">
+            </div>
+
+            <label>Summary</label>
+            <div class="input-group" style="margin-bottom: 30px">
+                <span class="input-group-addon"><i class="fas fa-bars"></i></span>
+                <input id="summary" type="text" class="form-control" name="summary" placeholder="summary">
+            </div>
+
+            <label>Length</label>
+            <div class="input-group" style="margin-bottom: 30px">
+                <span class="input-group-addon"><i class="material-icons">traffic</i></span>
+                <input id="length" type="number" class="form-control" name="length" placeholder="retry length">
+            </div>
+
+            <label>Year</label>
+            <div class="input-group" style="margin-bottom: 30px;">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-cloud"></i></span>
+                <input id="year" type="number" class="form-control" name="year" placeholder="year">
+            </div>
+
+            <label>Price</label>
+            <div class="input-group" style="margin-bottom: 30px;">
+                <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                <input id="price" type="number" class="form-control" name="price" placeholder="price">
+            </div>
+
+            <label>Director</label>
+            <div class="input-group" style="margin-bottom: 30px">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input id="director" type="text" class="form-control" name="director" placeholder="director name">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-left: 400px; background-color: red; margin-top: 30px; padding: 5px; display: block">Submit</button>
+
+        </form>
+    </div>
+</body>
+
+</html>
