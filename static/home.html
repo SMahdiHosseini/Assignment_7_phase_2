@@ -1,8 +1,104 @@
-
 <!DOCTYPE html>
 <html>
-  <body style="text-align: center;">
-    <h1>AP HTTP</h1>
-    <a href="/login">Go to login page</a>
-  </body>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+    <link href="../../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/mdb.min.css" rel="stylesheet">
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+        }
+        
+        body {
+            background-image: url(clic_1.jpg);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        
+        html,
+        body,
+        header,
+        .view {
+            height: 100%;
+        }
+        
+        .card {
+            background-color: rgba(126, 123, 215, 0.2);
+        }
+        
+        .md-form label {
+            color: #ffffff;
+        }
+        
+        h6 {
+            line-height: 1.7;
+        }
+        
+        input[type="text"],
+        [type="password"] {
+            background: transparent;
+            color: black;
+            border-color: white;
+        }
+        
+        .button {
+            font-size: 16px;
+            padding: 16px 32px;
+            margin: 4px 2px;
+            background-color: transparent;
+            border: outset;
+            color: white;
+            display: inline-block;
+            -webkit-transition-duration: 0.2s;
+            transition-duration: 0.2s;
+        }
+        
+        .button:hover {
+            background-color: rgb(20, 57, 71);
+            color: white;
+        }
+    </style>
+    <h1 style="text-align: center; padding-top: 20%; color: white">Login Page</h1>
+</head>
+
+<body>
+    <div class="col-md-6 col-xl-5 mb-4" style="background-color: transparent">
+        <form action="/login" method="POST">
+            <div class="text-center">
+                <h3 class="white-text" style="color: white">
+                    <i class="fas fa-user white-text"></i> Register:</h3>
+                <hr class="hr-light">
+            </div>
+
+
+            <div class="md-form" style="margin-bottom: 60px">
+                <i class="fas fa-user prefix white-text active"></i>
+                <label for="form3" class="active">Username</label>
+                <input style="position: absolute;" type="text" id="username" class="white-text form-control"> </div>
+
+
+            <div class="md-form" style="margin-bottom: 30px; margin-top: 30px;">
+                <i class="fas fa-envelope prefix white-text active"></i>
+                <label for="form2" class="active">Password</label>
+                <input type="password" id="password" class="white-text form-control">
+            </div>
+
+
+            <div class="text-center mt-4">
+                <button class="button" type="submit">Login</button>
+            </div>
+
+            <div class="text-center mt-4">
+                <form action="/signup" method="POST">
+                    <button class="button" type="submit">Signup</button>
+                    <hr class="hr-light mb-3 mt-4">
+                </form>
+            </div>
+
+        </form>
+</body>
+
 </html>
