@@ -13,10 +13,17 @@ int main(int argc, char const *argv[])
     {
         server.setNotFoundErrPage("static/404.html");
 
-        server.get("/", new ShowPage("static/signup.html"));
+
+        server.get("/1.jpg", new ShowImage("static/1.jpg"));
+        server.get("/", new ShowPage("static/home.html"));
+
+        server.get("/login", new ShowPage("static/home.html"));
+        server.post("/login", new LoginHandler(network));
 
         server.get("/signup", new ShowPage("static/signup.html"));
         server.post("/signup", new SignupHandler(network));
+
+        server.post("/logout", new LogoutHandler(network));
 
         // server.get("/home", new ShowPage("static/home_page.html"));
         // server.post("/home", new ShowPage("static/home_page.html"));
