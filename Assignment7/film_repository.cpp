@@ -56,7 +56,7 @@ bool FilmRepository::in_range_film(map<string, string> options, Film* film)
             flag = false;
         if(option.first == "min_year" && film->get_year() >= stoi(option.second))
             flag = false;
-        if(option.first == PRICE && film->get_price() >= stoi(option.second))
+        if(option.first == PRICE && film->get_price() <= stoi(option.second))
             flag = false;
         if(option.first == "max_year" && film->get_year() <= stoi(option.second))
             flag = false;
