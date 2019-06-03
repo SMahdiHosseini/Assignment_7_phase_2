@@ -42,6 +42,10 @@ Response* LoginHandler::callback(Request* req)
         throw Server::Exception("Bad request");        
 }
 
+Show::Show(Network* _network) : network(_network)
+{
+}
+
 Response* Show::show_films()
 {
     map<string, string> options;
@@ -55,6 +59,9 @@ Response* Show::show_films()
     }
     Response *res = new Response;
     res->setHeader("Content-Type", "text/html");
+/**********
+    res->redirect("/signup");
+*/
     ostringstream body;
     body
         <<"<html>" << endl
@@ -64,13 +71,19 @@ Response* Show::show_films()
         <<"<body>" << endl
         << "    <nav class='navbar navbar-expand-sm bg-dark navbar-dark fixed-top'>" << endl
         << "        <ul class='navbar-nav'>" << endl
-        << "            <li class='nav-item'>" << endl
         << "                <form action='/logout' method='POST'><button class='btn btn-danger' type='submit'>Logout</button></form>" << endl
-        << "            </li>" << endl
-        << "        </ul>" << endl
+        << "        </ul>" << endl;
+    if(network->find_logged_in_user()->check_publsher() == true)
+    {
+        body
+            << "        <ul class='navbar-nav'>" << endl
+            << "                <form action='/add_film' method='GET'><button class='btn btn-warning' type='submit'>Add film</button></form>" << endl
+            << "        </ul>" << endl;
+    }
+    body
         << "    </nav>" << endl
         <<"    <form action='/home' method='POST'>" << endl
-        <<"        <div class='input-group' style='padding-left: 30%; padding-top: 5%; max-width: 70%;'>" << endl
+        <<"        <div class='input-group' style='padding-left: 30%; padding-top: 20%; max-width: 70%;'>" << endl
         <<"            <span class='input-group-btn'>" << endl
         <<"                <button class='btn btn-default' type='submit' style='background-color: blue; color: white'>Go</button>" << endl
         <<"            </span>" << endl
@@ -92,24 +105,29 @@ Response* Show::show_films()
         <<"                    <th>Delete Film</th>" << endl
         <<"                </tr>" << endl
         <<"            </thead>" << endl
-        <<"            <tbody>" << endl
-        <<"                <tr>" << endl;
+        <<"            <tbody>" << endl;
         for (int i = 0; i < films.size(); i++)
         {
             body
+                <<"                <tr>" << endl
                 <<"                    <td>" << films[i][0] << "</td>" << endl
                 <<"                    <td>" << films[i][1] << "</td>" << endl
                 <<"                    <td>" << films[i][2] << "</td>" << endl
                 <<"                    <td>" << films[i][3] << "</td>" << endl
                 <<"                    <td>" << films[i][4] << "</td>" << endl
                 <<"                    <td>" << films[i][5] << "</td>" << endl
-                <<"                    <td>" << films[i][6] << "</td>" << endl
-                <<"                    <td>" << endl
-                <<"                        <form action='/delete_film' method='POST'><button class='btn btn-warning' type='submit'>DELETE</button></form>" << endl
-                <<"                    </td>" << endl;
+                <<"                    <td>" << films[i][6] << "</td>" << endl;
+            if(network->find_logged_in_user()->check_publsher() == true)
+            {
+                body
+                    <<"                    <td>" << endl
+                    <<"                        <form action='/delete_film' method='POST'><button class='btn btn-warning' type='submit'>DELETE</button></form>" << endl
+                    <<"                    </td>" << endl;
+            }
+            body
+                <<"                </tr>" << endl;
         }
     body
-        <<"                </tr>" << endl
         <<"            </tbody>" << endl
         <<"        </table>" << endl
         <<"    </div>" << endl
@@ -166,11 +184,12 @@ Response* FilmHandler::callback(Request* req)
     elements["rate"] = req->getBodyParam("rate");
     elements["price"] = req->getBodyParam("price");
     if(valid.add_film_validity(elements))
-    {   
+    {
         try
         {
             show.network->add_film(elements["name"], stoi(elements["year"]), stoi(elements["length"]), 
                                 stoi(elements["price"]), elements["summary"], elements["deirector"]);
+
             return show.show_films();
         }
         catch(...)
