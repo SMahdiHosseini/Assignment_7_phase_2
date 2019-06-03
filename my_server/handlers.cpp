@@ -32,7 +32,7 @@ ProfileHandler::ProfileHandler(Network* _network) : show(_network)
 {
 }
 
-IncreaseHandler::IncreaseHandler(Network* _network)
+IncreaseHandler::IncreaseHandler(Network* _network) : network(_network)
 {
 }
 
@@ -242,7 +242,8 @@ Response* IncreaseHandler::callback(Request* req)
 {
     try
     {
-        network->increase_money(stoi(req->getBodyParam("money")));   
+        int money = stoi(req->getBodyParam("money"));
+        network->increase_money(money);
         return Response::redirect("/profile");
     }
     catch(...)
