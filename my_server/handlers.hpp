@@ -9,7 +9,7 @@ class Show
 {
 public:
   Show(Network* _network);
-  Response* show_films();
+  Response* show_films(int method);
   Network* network;
 };
 
@@ -49,5 +49,22 @@ private:
   Validity valid;
 };
 
+class ProfileHandler : public RequestHandler
+{
+public:
+  ProfileHandler(Network* _network);
+  Response* callback(Request* req);
+private:
+  Show show;
+};
+
+class IncreaseHandler : public RequestHandler
+{
+public:
+  IncreaseHandler(Network* _network);
+  Response* callback(Request* req);
+private:
+  Network* network;
+};
 
 #endif

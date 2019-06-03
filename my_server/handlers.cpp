@@ -5,6 +5,13 @@
 #include <map>
 #include <sstream>
 
+enum show_methoes
+{
+    PUBLISHED = true,
+    USER = false,
+    PROFILE = 2
+};
+
 using namespace std;
 
 LogoutHandler::LogoutHandler(Network* _network) : network(_network)
@@ -21,6 +28,14 @@ LoginHandler::LoginHandler(Network* _network) : show(_network)
 {
 }
 
+ProfileHandler::ProfileHandler(Network* _network) : show(_network)
+{
+}
+
+IncreaseHandler::IncreaseHandler(Network* _network)
+{
+}
+
 Response* LoginHandler::callback(Request* req)
 {
     map<string, string> elements;
@@ -31,7 +46,7 @@ Response* LoginHandler::callback(Request* req)
         try
         {
             show.network->login(elements["username"], elements["password"]);
-            return show.show_films();
+            return show.show_films(show.network->find_logged_in_user()->check_publsher());
         }
         catch(...)
         {
@@ -46,22 +61,18 @@ Show::Show(Network* _network) : network(_network)
 {
 }
 
-Response* Show::show_films()
+Response* Show::show_films(int method)
 {
     map<string, string> options;
     vector<vector<string>> films;
-    if(network->find_logged_in_user()->check_publsher() == true)
+    if(method == PUBLISHED)
         films = network->show_published_film(options);
-    else
-    {
-        options["price"] = network->find_logged_in_user()->get_money();
+    if(method == USER)
         films = network->search(options);
-    }
+    if(method == PROFILE)
+        films = network->show_bought_films(options);
     Response *res = new Response;
     res->setHeader("Content-Type", "text/html");
-/**********
-    res->redirect("/signup");
-*/
     ostringstream body;
     body
         <<"<html>" << endl
@@ -73,11 +84,18 @@ Response* Show::show_films()
         << "        <ul class='navbar-nav'>" << endl
         << "                <form action='/logout' method='POST'><button class='btn btn-danger' type='submit'>Logout</button></form>" << endl
         << "        </ul>" << endl;
-    if(network->find_logged_in_user()->check_publsher() == true)
+    if(method == PUBLISHED)
     {
         body
             << "        <ul class='navbar-nav'>" << endl
             << "                <form action='/add_film' method='GET'><button class='btn btn-warning' type='submit'>Add film</button></form>" << endl
+            << "        </ul>" << endl;
+    }
+    if(method == USER)
+    {        
+        body
+            << "        <ul class='navbar-nav'>" << endl
+            << "                <form action='/profile' method='GET'><button class='btn btn-warning' type='submit'>Profile</button></form>" << endl
             << "        </ul>" << endl;
     }
     body
@@ -89,7 +107,8 @@ Response* Show::show_films()
         <<"            </span>" << endl
         <<"            <input type='text' class='form-control' id='publisher' name='director' placeholder='director'>" << endl
         <<"        </div>" << endl
-        <<"    </form>" << endl
+        <<"    </form>" << endl;
+    body    
         <<"    <div class='container'>" << endl
         <<"        <h2>Published Films</h2>" << endl
         <<"        <table class='table table-dark table-striped'>" << endl
@@ -106,31 +125,44 @@ Response* Show::show_films()
         <<"                </tr>" << endl
         <<"            </thead>" << endl
         <<"            <tbody>" << endl;
-        for (int i = 0; i < films.size(); i++)
+    for (int i = 0; i < films.size(); i++)
+    {
+        body
+            <<"                <tr>" << endl
+            <<"                    <td>" << films[i][0] << "</td>" << endl
+            <<"                    <td>" << films[i][1] << "</td>" << endl
+            <<"                    <td>" << films[i][2] << "</td>" << endl
+            <<"                    <td>" << films[i][3] << "</td>" << endl
+            <<"                    <td>" << films[i][4] << "</td>" << endl
+            <<"                    <td>" << films[i][5] << "</td>" << endl
+            <<"                    <td>" << films[i][6] << "</td>" << endl;
+        if(method == PUBLISHED)
         {
             body
-                <<"                <tr>" << endl
-                <<"                    <td>" << films[i][0] << "</td>" << endl
-                <<"                    <td>" << films[i][1] << "</td>" << endl
-                <<"                    <td>" << films[i][2] << "</td>" << endl
-                <<"                    <td>" << films[i][3] << "</td>" << endl
-                <<"                    <td>" << films[i][4] << "</td>" << endl
-                <<"                    <td>" << films[i][5] << "</td>" << endl
-                <<"                    <td>" << films[i][6] << "</td>" << endl;
-            if(network->find_logged_in_user()->check_publsher() == true)
-            {
-                body
-                    <<"                    <td>" << endl
-                    <<"                        <form action='/delete_film' method='POST'><button class='btn btn-warning' type='submit'>DELETE</button></form>" << endl
-                    <<"                    </td>" << endl;
-            }
-            body
-                <<"                </tr>" << endl;
+                <<"                    <td>" << endl
+                <<"                        <form action='/delete_film' method='POST'><button class='btn btn-warning' type='submit'>DELETE</button></form>" << endl
+                <<"                    </td>" << endl;
         }
+        body
+            <<"                </tr>" << endl;
+    }    
     body
         <<"            </tbody>" << endl
         <<"        </table>" << endl
-        <<"    </div>" << endl
+        <<"    </div>" << endl;
+    if(method == PROFILE)
+    {        
+        body
+            <<"    <form action='/money' method='POST'>" << endl
+            <<"        <div class='input-group' style='padding-left: 30%; padding-top: 20%; max-width: 70%;'>" << endl
+            <<"            <span class='input-group-btn'>" << endl
+            <<"                <button class='btn btn-default' type='submit' style='background-color: yellow; color: white'>Increase</button>" << endl
+            <<"            </span>" << endl
+            <<"            <input type='number' class='form-control' id='money' name='money' placeholder='money'>" << endl
+            <<"        </div>" << endl
+            <<"    </form>" << endl;
+    }
+    body
         <<"</body>" << endl
         <<"</html>" << endl;
     res->setBody(body.str());
@@ -157,7 +189,7 @@ Response* SignupHandler::callback(Request* req)
         {
             show.network->signup(elements["email"], elements["username"], elements["password"], 
                         stoi(elements["age"]), valid.check_publisher(elements["publisher"]));
-            return show.show_films();
+            return show.show_films(show.network->find_logged_in_user()->check_publsher());
         }
         catch(...)
         {
@@ -188,9 +220,9 @@ Response* FilmHandler::callback(Request* req)
         try
         {
             show.network->add_film(elements["name"], stoi(elements["year"]), stoi(elements["length"]), 
-                                stoi(elements["price"]), elements["summary"], elements["deirector"]);
+                                stoi(elements["price"]), elements["summary"], elements["director"]);
 
-            return show.show_films();
+            return show.show_films(show.network->find_logged_in_user()->check_publsher());
         }
         catch(...)
         {
@@ -199,4 +231,22 @@ Response* FilmHandler::callback(Request* req)
     }
     else
         throw Server::Exception("Bad request");
+}
+
+Response* ProfileHandler::callback(Request* req)
+{
+    return show.show_films(PROFILE);
+}
+
+Response* IncreaseHandler::callback(Request* req)
+{
+    try
+    {
+        network->increase_money(stoi(req->getBodyParam("money")));   
+        return Response::redirect("/profile");
+    }
+    catch(...)
+    {
+        throw Server::Exception("Bad request");
+    }
 }
