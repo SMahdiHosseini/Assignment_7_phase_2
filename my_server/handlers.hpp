@@ -8,9 +8,8 @@
 class Show
 {
 public:
-  Show(Network* _network);
-  Response* show_films(int method);
-  Network* network;
+  Show();
+  Response* show_films(int method, std::vector<std::vector<std::string>> films);
 };
 
 class LogoutHandler: public RequestHandler
@@ -30,6 +29,7 @@ public:
 protected:
   Show show;
   Validity valid;
+  Network* network;
 };
 
 class SignupHandler : public LoginHandler 
@@ -47,6 +47,7 @@ public:
 private:
   Show show;
   Validity valid;
+  Network* network;
 };
 
 class ProfileHandler : public RequestHandler
@@ -56,6 +57,7 @@ public:
   Response* callback(Request* req);
 private:
   Show show;
+  Network* network;
 };
 
 class IncreaseHandler : public RequestHandler
@@ -66,5 +68,25 @@ public:
 private:
   Network* network;
 };
+
+class SearchHandler : public RequestHandler
+{
+public:
+  SearchHandler(Network* _network);
+  Response* callback(Request* req);
+private:
+  Show show;
+  Network* network;
+};
+
+// class DeleteHandler : public RequestHandler
+// {
+// public:
+//   DeleteHandler(Network* _network);
+//   Response* callback(Request* req);
+// private:
+//   Show show;
+//   Network* network;
+// };
 
 #endif

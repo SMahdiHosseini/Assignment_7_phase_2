@@ -8,7 +8,7 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     Network* network = new Network();
-    MyServer server(argc > 1 ? atoi(argv[1]) : 5001);
+    MyServer server(argc > 1 ? atoi(argv[1]) : 5000);
     try
     {
         server.setNotFoundErrPage("static/404.html");
@@ -27,6 +27,10 @@ int main(int argc, char const *argv[])
         server.post("/add_film", new FilmHandler(network));
 
         server.get("/profile", new ProfileHandler(network));
+
+        server.post("/money", new IncreaseHandler(network));
+
+        server.post("/search", new SearchHandler(network));
 
         server.post("/logout", new LogoutHandler(network));
 

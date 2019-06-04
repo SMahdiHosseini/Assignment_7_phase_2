@@ -24,17 +24,25 @@ Response* LogoutHandler::callback(Request* req)
     return Response::redirect("/");
 }
 
-LoginHandler::LoginHandler(Network* _network) : show(_network)
+LoginHandler::LoginHandler(Network* _network) : network(_network)
 {
 }
 
-ProfileHandler::ProfileHandler(Network* _network) : show(_network)
+ProfileHandler::ProfileHandler(Network* _network) : network(_network)
 {
 }
 
 IncreaseHandler::IncreaseHandler(Network* _network) : network(_network)
 {
 }
+
+SearchHandler::SearchHandler(Network* _network) : network(_network)
+{
+}
+
+// DeleteHandler::DeleteHandler(Network* _network) : network(_network)
+// {
+// }
 
 Response* LoginHandler::callback(Request* req)
 {
@@ -45,8 +53,11 @@ Response* LoginHandler::callback(Request* req)
     {
         try
         {
-            show.network->login(elements["username"], elements["password"]);
-            return show.show_films(show.network->find_logged_in_user()->check_publsher());
+            network->login(elements["username"], elements["password"]);
+            map<string, string> options; 
+            if (network->find_logged_in_user()->check_publsher())
+                return show.show_films(true, network->show_published_film(options));
+            return show.show_films(false, network->search(options));
         }
         catch(...)
         {
@@ -57,20 +68,12 @@ Response* LoginHandler::callback(Request* req)
         throw Server::Exception("Bad request");        
 }
 
-Show::Show(Network* _network) : network(_network)
+Show::Show()
 {
 }
 
-Response* Show::show_films(int method)
+Response* Show::show_films(int method, vector<vector<string>> films)
 {
-    map<string, string> options;
-    vector<vector<string>> films;
-    if(method == PUBLISHED)
-        films = network->show_published_film(options);
-    if(method == USER)
-        films = network->search(options);
-    if(method == PROFILE)
-        films = network->show_bought_films(options);
     Response *res = new Response;
     res->setHeader("Content-Type", "text/html");
     ostringstream body;
@@ -100,7 +103,7 @@ Response* Show::show_films(int method)
     }
     body
         << "    </nav>" << endl
-        <<"    <form action='/home' method='POST'>" << endl
+        <<"    <form action='/search' method='POST'>" << endl
         <<"        <div class='input-group' style='padding-left: 30%; padding-top: 20%; max-width: 70%;'>" << endl
         <<"            <span class='input-group-btn'>" << endl
         <<"                <button class='btn btn-default' type='submit' style='background-color: blue; color: white'>Go</button>" << endl
@@ -109,8 +112,23 @@ Response* Show::show_films(int method)
         <<"        </div>" << endl
         <<"    </form>" << endl;
     body    
-        <<"    <div class='container'>" << endl
-        <<"        <h2>Published Films</h2>" << endl
+        <<"    <div class='container'>" << endl;
+    if(method == PUBLISHED)
+    {
+        body
+            <<"        <h2>Published Films</h2>" << endl;
+    }
+    if(method == USER)
+    {
+        body
+            <<"        <h2>All Films</h2>" << endl;
+    }
+    if(method == PROFILE)
+    {
+        body
+            <<"        <h2>Bought Films</h2>" << endl;
+    }
+    body
         <<"        <table class='table table-dark table-striped'>" << endl
         <<"            <thead>" << endl
         <<"                <tr>" << endl
@@ -140,7 +158,7 @@ Response* Show::show_films(int method)
         {
             body
                 <<"                    <td>" << endl
-                <<"                        <form action='/delete_film' method='POST'><button class='btn btn-warning' type='submit'>DELETE</button></form>" << endl
+                <<"                        <form action='/delete_film' method='POST'><button class='btn btn-warning' type='submit' id='film_id' value='"<< films[i][0] << "'>DELETE</button></form>" << endl
                 <<"                    </td>" << endl;
         }
         body
@@ -187,9 +205,12 @@ Response* SignupHandler::callback(Request* req)
     {   
         try
         {
-            show.network->signup(elements["email"], elements["username"], elements["password"], 
+            network->signup(elements["email"], elements["username"], elements["password"], 
                         stoi(elements["age"]), valid.check_publisher(elements["publisher"]));
-            return show.show_films(show.network->find_logged_in_user()->check_publsher());
+            map<string, string> options; 
+            if (network->find_logged_in_user()->check_publsher())
+                return show.show_films(true, network->show_published_film(options));
+            return show.show_films(false, network->search(options));
         }
         catch(...)
         {
@@ -200,7 +221,7 @@ Response* SignupHandler::callback(Request* req)
         throw Server::Exception("Bad request");
 }
 
-FilmHandler::FilmHandler(Network* _network) : show(_network)
+FilmHandler::FilmHandler(Network* _network) :network(_network)
 {
 }
 
@@ -219,10 +240,12 @@ Response* FilmHandler::callback(Request* req)
     {
         try
         {
-            show.network->add_film(elements["name"], stoi(elements["year"]), stoi(elements["length"]), 
+            network->add_film(elements["name"], stoi(elements["year"]), stoi(elements["length"]), 
                                 stoi(elements["price"]), elements["summary"], elements["director"]);
-
-            return show.show_films(show.network->find_logged_in_user()->check_publsher());
+            map<string, string> options; 
+            if (network->find_logged_in_user()->check_publsher())
+                return show.show_films(true, network->show_published_film(options));
+            return show.show_films(false, network->search(options));
         }
         catch(...)
         {
@@ -235,7 +258,15 @@ Response* FilmHandler::callback(Request* req)
 
 Response* ProfileHandler::callback(Request* req)
 {
-    return show.show_films(PROFILE);
+    try
+    {
+        map<string, string> options;
+        return show.show_films(PROFILE, network->show_bought_films(options));   
+    }
+    catch(...)
+    {
+        throw Server::Exception("Bad request");
+    }
 }
 
 Response* IncreaseHandler::callback(Request* req)
@@ -251,3 +282,41 @@ Response* IncreaseHandler::callback(Request* req)
         throw Server::Exception("Bad request");
     }
 }
+
+Response* SearchHandler::callback(Request* req) 
+{
+    try
+    {
+        map<string, string> options;
+        options["director"] = req->getBodyParam("director");
+        if (network->find_logged_in_user()->check_publsher())
+                return show.show_films(true, network->show_published_film(options));
+        return show.show_films(false, network->search(options));
+    }
+    catch(...)
+    {
+        throw Server::Exception("Bad request");
+    }
+}
+
+// Response* DeleteHandler::callback(Request* req) 
+// {
+//     try
+//     {
+//         map<string, string> options;
+//         int film_id = stoi(req->getBodyParam("film_id"));
+//         network->delete_film(film_id);
+//         return show.show_films(PUBLISHED, network->show_published_film(options));
+//     }
+//     catch(...)
+//     {
+//         throw Server::Exception("Bad request");
+//     }
+// }
+
+
+
+
+
+
+
