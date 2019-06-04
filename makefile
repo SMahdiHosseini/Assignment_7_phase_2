@@ -30,8 +30,14 @@ $(BUILD_DIR)/route.o: server/route.cpp server/route.hpp utils/utilities.hpp util
 $(BUILD_DIR)/handlers.o: my_server/handlers.cpp server/server.hpp utils/utilities.hpp utils/response.hpp utils/request.hpp utils/include.hpp
 	$(CC) $(CF) -c my_server/handlers.cpp -o $(BUILD_DIR)/handlers.o
 
+$(BUILD_DIR)/buy_handler.o: my_server/buy_handler.cpp server/server.hpp utils/utilities.hpp utils/response.hpp utils/request.hpp utils/include.hpp
+	$(CC) $(CF) -c my_server/buy_handler.cpp -o $(BUILD_DIR)/buy_handler.o
+
 $(BUILD_DIR)/show.o: my_server/show.cpp server/server.hpp utils/utilities.hpp utils/response.hpp utils/request.hpp utils/include.hpp
 	$(CC) $(CF) -c my_server/show.cpp -o $(BUILD_DIR)/show.o
+
+$(BUILD_DIR)/home_handler.o: my_server/home_handler.cpp server/server.hpp utils/utilities.hpp utils/response.hpp utils/request.hpp utils/include.hpp
+	$(CC) $(CF) -c my_server/home_handler.cpp -o $(BUILD_DIR)/home_handler.o
 
 $(BUILD_DIR)/details_handler.o: my_server/details_handler.cpp my_server/show.hpp server/server.hpp utils/utilities.hpp utils/response.hpp utils/request.hpp utils/include.hpp
 	$(CC) $(CF) -c my_server/details_handler.cpp -o $(BUILD_DIR)/details_handler.o
@@ -102,8 +108,8 @@ $(BUILD_DIR)/notification_repository.o: Assignment7/notification_repository.cpp 
 $(BUILD_DIR)/validity.o: Assignment7/validity.cpp Assignment7/validity.h
 	$(CC) $(CF) -c Assignment7/validity.cpp -o $(BUILD_DIR)/validity.o	
 	
-myserver.out: $(BUILD_DIR)/handlers.o $(BUILD_DIR)/delete_handler.o $(BUILD_DIR)/details_handler.o $(BUILD_DIR)/signup_handler.o $(BUILD_DIR)/login_handler.o $(BUILD_DIR)/search_handler.o $(BUILD_DIR)/film_handler.o $(BUILD_DIR)/increase_handler.o $(BUILD_DIR)/profile_handler.o $(BUILD_DIR)/show.o $(BUILD_DIR)/main.o $(BUILD_DIR)/my_server.o $(BUILD_DIR)/response.o $(BUILD_DIR)/request.o $(BUILD_DIR)/utilities.o $(BUILD_DIR)/server.o $(BUILD_DIR)/route.o $(BUILD_DIR)/template_parser.o $(BUILD_DIR)/user.o $(BUILD_DIR)/publisher.o $(BUILD_DIR)/comment.o $(BUILD_DIR)/network.o $(BUILD_DIR)/film.o $(BUILD_DIR)/user_repository.o $(BUILD_DIR)/film_repository.o $(BUILD_DIR)/comment_repository.o $(BUILD_DIR)/exception.o $(BUILD_DIR)/notification.o $(BUILD_DIR)/validity.o $(BUILD_DIR)/notification_repository.o $(BUILD_DIR)/network_film_repository.o
-	$(CC) $(CF) $(BUILD_DIR)/my_server.o $(BUILD_DIR)/main.o $(BUILD_DIR)/handlers.o $(BUILD_DIR)/delete_handler.o $(BUILD_DIR)/details_handler.o $(BUILD_DIR)/signup_handler.o $(BUILD_DIR)/login_handler.o $(BUILD_DIR)/search_handler.o $(BUILD_DIR)/film_handler.o $(BUILD_DIR)/increase_handler.o $(BUILD_DIR)/profile_handler.o $(BUILD_DIR)/show.o $(BUILD_DIR)/response.o $(BUILD_DIR)/request.o $(BUILD_DIR)/utilities.o $(BUILD_DIR)/server.o $(BUILD_DIR)/route.o $(BUILD_DIR)/template_parser.o $(BUILD_DIR)/user.o $(BUILD_DIR)/publisher.o $(BUILD_DIR)/comment.o $(BUILD_DIR)/network.o $(BUILD_DIR)/film.o $(BUILD_DIR)/user_repository.o $(BUILD_DIR)/film_repository.o $(BUILD_DIR)/comment_repository.o $(BUILD_DIR)/exception.o $(BUILD_DIR)/notification.o $(BUILD_DIR)/validity.o $(BUILD_DIR)/notification_repository.o $(BUILD_DIR)/network_film_repository.o -o myserver.out
+myserver.out: $(BUILD_DIR)/handlers.o $(BUILD_DIR)/delete_handler.o $(BUILD_DIR)/home_handler.o $(BUILD_DIR)/buy_handler.o $(BUILD_DIR)/details_handler.o $(BUILD_DIR)/signup_handler.o $(BUILD_DIR)/login_handler.o $(BUILD_DIR)/search_handler.o $(BUILD_DIR)/film_handler.o $(BUILD_DIR)/increase_handler.o $(BUILD_DIR)/profile_handler.o $(BUILD_DIR)/show.o $(BUILD_DIR)/main.o $(BUILD_DIR)/my_server.o $(BUILD_DIR)/response.o $(BUILD_DIR)/request.o $(BUILD_DIR)/utilities.o $(BUILD_DIR)/server.o $(BUILD_DIR)/route.o $(BUILD_DIR)/template_parser.o $(BUILD_DIR)/user.o $(BUILD_DIR)/publisher.o $(BUILD_DIR)/comment.o $(BUILD_DIR)/network.o $(BUILD_DIR)/film.o $(BUILD_DIR)/user_repository.o $(BUILD_DIR)/film_repository.o $(BUILD_DIR)/comment_repository.o $(BUILD_DIR)/exception.o $(BUILD_DIR)/notification.o $(BUILD_DIR)/validity.o $(BUILD_DIR)/notification_repository.o $(BUILD_DIR)/network_film_repository.o
+	$(CC) $(CF) $(BUILD_DIR)/my_server.o $(BUILD_DIR)/main.o $(BUILD_DIR)/handlers.o $(BUILD_DIR)/delete_handler.o $(BUILD_DIR)/home_handler.o $(BUILD_DIR)/buy_handler.o $(BUILD_DIR)/details_handler.o $(BUILD_DIR)/signup_handler.o $(BUILD_DIR)/login_handler.o $(BUILD_DIR)/search_handler.o $(BUILD_DIR)/film_handler.o $(BUILD_DIR)/increase_handler.o $(BUILD_DIR)/profile_handler.o $(BUILD_DIR)/show.o $(BUILD_DIR)/response.o $(BUILD_DIR)/request.o $(BUILD_DIR)/utilities.o $(BUILD_DIR)/server.o $(BUILD_DIR)/route.o $(BUILD_DIR)/template_parser.o $(BUILD_DIR)/user.o $(BUILD_DIR)/publisher.o $(BUILD_DIR)/comment.o $(BUILD_DIR)/network.o $(BUILD_DIR)/film.o $(BUILD_DIR)/user_repository.o $(BUILD_DIR)/film_repository.o $(BUILD_DIR)/comment_repository.o $(BUILD_DIR)/exception.o $(BUILD_DIR)/notification.o $(BUILD_DIR)/validity.o $(BUILD_DIR)/notification_repository.o $(BUILD_DIR)/network_film_repository.o -o myserver.out
 
 .PHONY: clean
 clean:
