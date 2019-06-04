@@ -124,30 +124,35 @@ vector<string> Film::show()
     vector<string> show;
     show.push_back(to_string(id));
     show.push_back(name);
-    show.push_back(to_string(length)); 
-    show.pop_back(to_string(price));
-    show.pop_back(to_string((int) ((score * 100.0) / 100.0)));
+    show.push_back(to_string(price));
     show.push_back(to_string(year));
+    show.push_back(to_string(length)); 
+    show.push_back(to_string((int) ((score * 100.0) / 100.0)));
     show.push_back(director);
     return show;
 }
 
-string Film::show_details()
+vector<string> Film::show_details()
 {
-    string details = "";
-    details += "Details of Film " + name + "\n";
-    details += "Id = " + to_string(id) + "\n";
-    details += "Director = " + director + "\n";
-    details += "Length = " + to_string(length) + "\n";
-    details += "Year = " + to_string(year) + "\n";
-    details += "Summary = " + summary + "\n";
-    details += "Rate = " + to_string((int) ((score * 100.0) / 100.0)) + "\n";
-    details += "Price = " + to_string(price) + "\n";
-    details += comments.show_comments();
+    vector<string> details;
+    details.push_back(name);
+    details.push_back(to_string(id));
+    details.push_back(director);
+    details.push_back(to_string(length));
+    details.push_back(to_string(year));
+    details.push_back(summary);
+    details.push_back(to_string((int) ((score * 100.0) / 100.0)));
+    details.push_back(to_string(price));
+    details.push_back(comments.show_comments());
     return details;
 }
 
-string Film::show_recommend()
+vector<string> Film::show_recommend()
 {
-    return to_string(id) + " | " + name + " | " + to_string(length) + " | " + director + "\n";
+    vector<string> show_recom;
+    show_recom.push_back(to_string(id));
+    show_recom.push_back(name);
+    show_recom.push_back(to_string(length));
+    show_recom.push_back(director);
+    return show_recom;
 }

@@ -217,20 +217,24 @@ vector<vector<string>> Network::show_published_film(map<string, string> options)
     return find_logged_in_user()->show_films(options);
 }
 
-void Network::show_bought_films(map<string, string> options)
+vector<vector<string>> Network::show_bought_films(map<string, string> options)
 {
-    find_logged_in_user()->show_bought_films(options);
+    return find_logged_in_user()->show_bought_films(options);
 }
 
 vector<vector<string>> Network::search(map<string, string> options)
 {
     check_login();
-    films->show_films(options);
+    return films->show_films(options);
 }
 
-void Network::show_film_details(int film_id)
+vector<string> Network::show_film_details(int film_id)
 {
     check_login();
-    films->show_film_details(film_id);
-    films->show_recommend_film(find_logged_in_user()->get_bought_films_id(), film_id);
+    return films->show_film_details(film_id);
+}
+
+vector<vector<string>> Network::show_recom_film(int film_id)
+{
+    return films->show_recommend_film(find_logged_in_user()->get_bought_films_id(), film_id);
 }

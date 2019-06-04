@@ -22,8 +22,8 @@ public:
     int get_publisher_id();
     int get_rate();
     int find_user_id_with_comment_id(int comment_id);
-    std::string show_details();
-    std::string show_recommend();
+    std::vector<string> show_details();
+    std::vector<std::string> show_recommend();
     void add_comment(std::string content, int user_id);
     void set_rate(int score);
     void delete_comment(int comment_id);

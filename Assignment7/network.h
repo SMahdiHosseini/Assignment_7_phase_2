@@ -23,10 +23,11 @@ public:
     void buy_film(int film_id);
     void show_followers();
     void logout();
-    void show_film_details(int film_id);
+    std::vector<std::string> show_film_details(int film_id);
+    std::vector<std::vector<std::string>> show_recom_film(int film_id);
     void post_money();
     void get_money();
-    std::vector<std::vector<std::strnig>> search(std::map<std::string, std::string> options);
+    std::vector<std::vector<std::string>> search(std::map<std::string, std::string> options);
     void add_comment(int film_id, std::string content);
     void rate_film(int film_id, int score);
     void increase_money(int amount);

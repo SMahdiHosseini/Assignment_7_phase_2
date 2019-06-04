@@ -14,8 +14,8 @@ public:
     void update_matrix_delete_film(int film_id);
     void update_matrix_buy_film(int bought_films_id, std::vector<int> films_id);
     void edit_film(int publisher_id, int film_id, std::map<std::string, std::string> edited_options);
-    void show_film_details(int film_id);
-    void show_recommend_film(std::vector<int> bought_films_id, int film_id);
+    std::vector<std::string> show_film_details(int film_id);
+    std::vector<std::vector<std::string>> show_recommend_film(std::vector<int> bought_films_id, int film_id);
     bool existed(std::vector<int> bought_films_id, int id);
     std::vector<std::pair<wieght, id>> sort_pairs_by_weight(int film_id);
 private:

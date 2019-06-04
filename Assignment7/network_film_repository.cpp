@@ -63,9 +63,9 @@ void NetworkFilmRepository::delete_film(int film_id)
     update_matrix_delete_film(film_id);
 }
 
-void NetworkFilmRepository::show_film_details(int film_id)
+vector<string> NetworkFilmRepository::show_film_details(int film_id)
 {
-     cout << find_film_by_id(film_id)->show_details();
+    return find_film_by_id(film_id)->show_details();
 }
 
 
@@ -98,8 +98,9 @@ bool NetworkFilmRepository::existed(vector<int> bought_films_id, int id)
     return false;
 }
 
-void NetworkFilmRepository::show_recommend_film(vector<int> bought_films_id, int film_id)
+vector<vector<string>> NetworkFilmRepository::show_recommend_film(vector<int> bought_films_id, int film_id)
 {
+    vector<vector<string>> recom_films;
     cout << "Recommendation Film\n#. Film Id | Film Name | Film Length | Film Director\n";
     int counter = 1;
     vector<pair<int, int>> sorted_by_weight = sort_pairs_by_weight(film_id);
@@ -107,7 +108,7 @@ void NetworkFilmRepository::show_recommend_film(vector<int> bought_films_id, int
     {
         if(!existed(bought_films_id, sorted_by_weight[i].second) && counter <= 4 && sorted_by_weight[i].second != film_id)
         {
-            cout << counter << ". "  << find_film_by_id(sorted_by_weight[i].second)->show_recommend();
+            recom_films.push_back(find_film_by_id(sorted_by_weight[i].second)->show_recommend());
             counter++;
         }
     }
