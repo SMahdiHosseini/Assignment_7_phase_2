@@ -79,14 +79,14 @@ private:
   Network* network;
 };
 
-// class DeleteHandler : public RequestHandler
-// {
-// public:
-//   DeleteHandler(Network* _network);
-//   Response* callback(Request* req);
-// private:
-//   Show show;
-//   Network* network;
-// };
+class DeleteHandler : public RequestHandler
+{
+public:
+  DeleteHandler(Network* _network);
+  Response* callback(Request* req);
+private:
+  Show show;
+  Network* network;
+};
 
 #endif

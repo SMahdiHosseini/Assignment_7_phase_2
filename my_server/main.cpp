@@ -32,6 +32,8 @@ int main(int argc, char const *argv[])
 
         server.post("/search", new SearchHandler(network));
 
+        server.post("/delete_film", new DeleteHandler(network));
+
         server.post("/logout", new LogoutHandler(network));
 
         // server.get("/home", new ShowPage("static/home_page.html"));

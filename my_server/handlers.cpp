@@ -40,9 +40,9 @@ SearchHandler::SearchHandler(Network* _network) : network(_network)
 {
 }
 
-// DeleteHandler::DeleteHandler(Network* _network) : network(_network)
-// {
-// }
+DeleteHandler::DeleteHandler(Network* _network) : network(_network)
+{
+}
 
 Response* LoginHandler::callback(Request* req)
 {
@@ -78,28 +78,34 @@ Response* Show::show_films(int method, vector<vector<string>> films)
     res->setHeader("Content-Type", "text/html");
     ostringstream body;
     body
-        <<"<html>" << endl
-        <<"<head>" << endl
-        <<"    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css'>" << endl
-        <<"</head>" << endl
-        <<"<body>" << endl
-        << "    <nav class='navbar navbar-expand-sm bg-dark navbar-dark fixed-top'>" << endl
-        << "        <ul class='navbar-nav'>" << endl
-        << "                <form action='/logout' method='POST'><button class='btn btn-danger' type='submit'>Logout</button></form>" << endl
-        << "        </ul>" << endl;
+        << "<html>" << endl
+        << "<head>" << endl
+        << "    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css'>" << endl
+        << "</head>" << endl
+        << "<body>" << endl
+        << "     <nav class='navbar navbar-expand-sm bg-dark navbar-dark fixed-top'>" << endl
+        << "         <ul class='navbar-nav'>" << endl
+        << "             <form action='/logout' method='POST'>" << endl
+        << "                 <button class='btn btn-danger' type='submit'>Logout</button>" << endl
+        << "             </form>" << endl
+        << "         </ul>" << endl;
     if(method == PUBLISHED)
     {
         body
-            << "        <ul class='navbar-nav'>" << endl
-            << "                <form action='/add_film' method='GET'><button class='btn btn-warning' type='submit'>Add film</button></form>" << endl
-            << "        </ul>" << endl;
+        << "         <ul class='navbar-nav'>" << endl
+        << "             <form action='/add_film' method='GET'>" << endl
+        << "                 <button class='btn btn-warning' type='submit'>Add film</button>" << endl
+        << "             </form>" << endl
+        << "         </ul>" << endl;
     }
     if(method == USER)
     {        
         body
-            << "        <ul class='navbar-nav'>" << endl
-            << "                <form action='/profile' method='GET'><button class='btn btn-warning' type='submit'>Profile</button></form>" << endl
-            << "        </ul>" << endl;
+        << "         <ul class='navbar-nav'>" << endl
+        << "                 <form action='/profile' method='GET'>" << endl
+        << "                     <button class='btn btn-warning' type='submit'>Profile</button>" << endl
+        << "                 </form>" << endl
+        << "         </ul>" << endl;
     }
     body
         << "    </nav>" << endl
@@ -158,7 +164,14 @@ Response* Show::show_films(int method, vector<vector<string>> films)
         {
             body
                 <<"                    <td>" << endl
-                <<"                        <form action='/delete_film' method='POST'><button class='btn btn-warning' type='submit' id='film_id' value='"<< films[i][0] << "'>DELETE</button></form>" << endl
+                <<"                        <form action='/delete_film' method='POST'>" << endl
+                <<"                            <div class='input-group' style='padding-left: 30%; padding-top: 5%; max-width: 70%;'>" <<endl
+                <<"                                <span class='input-group-btn'>" << endl
+                <<"                                        <button class='btn btn-warning' type='submit'>DELETE</button>" << endl
+                <<"                                    </span>"
+                <<"                                <input type='hidden' class='form-control' id='delete_film' name='film_id' value='" << films[i][0] << "'>" << endl
+                <<"                            </div>"
+                <<"                        </form>"
                 <<"                    </td>" << endl;
         }
         body
@@ -299,20 +312,20 @@ Response* SearchHandler::callback(Request* req)
     }
 }
 
-// Response* DeleteHandler::callback(Request* req) 
-// {
-//     try
-//     {
-//         map<string, string> options;
-//         int film_id = stoi(req->getBodyParam("film_id"));
-//         network->delete_film(film_id);
-//         return show.show_films(PUBLISHED, network->show_published_film(options));
-//     }
-//     catch(...)
-//     {
-//         throw Server::Exception("Bad request");
-//     }
-// }
+Response* DeleteHandler::callback(Request* req) 
+{
+    try
+    {
+        map<string, string> options;
+        int film_id = stoi(req->getBodyParam("film_id"));
+        network->delete_film(film_id);
+        return show.show_films(PUBLISHED, network->show_published_film(options));
+    }
+    catch(...)
+    {
+        throw Server::Exception("Bad request");
+    }
+}
 
 
 
