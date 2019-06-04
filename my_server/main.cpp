@@ -9,6 +9,8 @@
 #include "increase_handler.hpp"
 #include "delete_handler.hpp"
 #include "search_handler.hpp"
+#include "buy_handler.hpp"
+#include "home_handler.hpp"
 #include <iostream>
 
 using namespace std;
@@ -42,12 +44,13 @@ int main(int argc, char const *argv[])
 
         server.post("/details", new DetailsHandler(network));
 
-        server.post("/delete_film", new DeleteHandler(network));
+        server.post("/delete", new DeleteHandler(network));
+
+        server.post("/buy", new BuyHandler(network));
 
         server.post("/logout", new LogoutHandler(network));
 
-        // server.get("/home", new ShowPage("static/home_page.html"));
-        // server.post("/home", new ShowPage("static/home_page.html"));
+        server.post("/home", new HomeHandler(network));
 
         server.run();;
     }
