@@ -1,6 +1,14 @@
 #include "../Assignment7/network.h"
 #include "my_server.hpp"
 #include "handlers.hpp"
+#include "details_handler.hpp"
+#include "login_handler.hpp"
+#include "signup_handler.hpp"
+#include "profile_handler.hpp"
+#include "film_handler.hpp"
+#include "increase_handler.hpp"
+#include "delete_handler.hpp"
+#include "search_handler.hpp"
 #include <iostream>
 
 using namespace std;
@@ -31,6 +39,8 @@ int main(int argc, char const *argv[])
         server.post("/money", new IncreaseHandler(network));
 
         server.post("/search", new SearchHandler(network));
+
+        server.post("/details", new DetailsHandler(network));
 
         server.post("/delete_film", new DeleteHandler(network));
 
