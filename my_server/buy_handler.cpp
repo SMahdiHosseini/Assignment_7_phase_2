@@ -15,8 +15,16 @@ Response* BuyHandler::callback(Request* req)
         network->buy_film(film_id);
         return Response::redirect("/profile");
     }
-    catch(...)
+    catch(BadRequest e)
     {
         throw Server::Exception("Bad request");
-    }    
+    }
+    catch(Inaccessibility e)
+    {
+        throw Server::Exception("permission denied");
+    }
+    catch(NotFound e)
+    {
+        throw Server::Exception("Not Found");
+    }
 }

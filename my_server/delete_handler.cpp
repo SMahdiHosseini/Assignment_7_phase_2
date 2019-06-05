@@ -17,8 +17,16 @@ Response* DeleteHandler::callback(Request* req)
         network->delete_film(film_id);
         return show.show_films(PUBLISHED, network->show_published_film(options));
     }
-    catch(...)
+    catch(BadRequest e)
     {
         throw Server::Exception("Bad request");
+    }
+    catch(Inaccessibility e)
+    {
+        throw Server::Exception("permission denied");
+    }
+    catch(NotFound e)
+    {
+        throw Server::Exception("Not Found");
     }
 }

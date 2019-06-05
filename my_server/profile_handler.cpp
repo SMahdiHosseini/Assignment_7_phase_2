@@ -13,10 +13,18 @@ Response* ProfileHandler::callback(Request* req)
     try
     {
         map<string, string> options;
-        return show.show_films(PROFILE, network->show_bought_films(options));   
+        return show.show_films(PROFILE, network->show_bought_films(options));
     }
-    catch(...)
+    catch(BadRequest e)
     {
         throw Server::Exception("Bad request");
+    }
+    catch(Inaccessibility e)
+    {
+        throw Server::Exception("permission denied");
+    }
+    catch(NotFound e)
+    {
+        throw Server::Exception("Not Found");
     }
 }

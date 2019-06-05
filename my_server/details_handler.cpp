@@ -15,9 +15,18 @@ Response* DetailsHandler::callback(Request* req)
         int film_id = stoi(req->getBodyParam("film_id"));
         vector<string> details = network->show_film_details(film_id);
         vector<vector<string>> recom_films = network->show_recom_film(film_id);
+        return show.show_film_details(network->find_logged_in_user()->check_publsher(), recom_films, details);
     }
-    catch(...)
+    catch(BadRequest e)
     {
         throw Server::Exception("Bad request");
+    }
+    catch(Inaccessibility e)
+    {
+        throw Server::Exception("permission denied");
+    }
+    catch(NotFound e)
+    {
+        throw Server::Exception("Not Found");
     }
 }

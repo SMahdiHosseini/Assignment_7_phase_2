@@ -1,19 +1,21 @@
-#include "home_handler.hpp"
+#include"search_handler.hpp"
 #include "../Assignment7/exceptions.h"
 
 using namespace std;
 
-HomeHandler::HomeHandler(Network* _network) : network(_network)
+
+SearchHandler::SearchHandler(Network* _network) : network(_network)
 {
 }
 
-Response* HomeHandler::callback(Request* req)
+Response* SearchHandler::callback(Request* req) 
 {
     try
     {
-        map<string, string> options; 
+        map<string, string> options;
+        options["director"] = req->getBodyParam("director");
         if (network->find_logged_in_user()->check_publsher())
-            return show.show_films(true, network->show_published_film(options));
+                return show.show_films(true, network->show_published_film(options));
         return show.show_films(false, network->search(options));
     }
     catch(BadRequest e)
@@ -27,5 +29,5 @@ Response* HomeHandler::callback(Request* req)
     catch(NotFound e)
     {
         throw Server::Exception("Not Found");
-    }    
+    }
 }

@@ -1,4 +1,5 @@
 #include "film_handler.hpp"
+#include "../Assignment7/exceptions.h"
 
 using namespace std;
 
@@ -28,9 +29,17 @@ Response* FilmHandler::callback(Request* req)
                 return show.show_films(true, network->show_published_film(options));
             return show.show_films(false, network->search(options));
         }
-        catch(...)
+        catch(BadRequest e)
         {
-            throw Server::Exception("Bad request");    
+            throw Server::Exception("Bad request");
+        }
+        catch(Inaccessibility e)
+        {
+            throw Server::Exception("permission denied");
+        }
+        catch(NotFound e)
+        {
+            throw Server::Exception("Not Found");
         }
     }
     else
