@@ -18,16 +18,15 @@ Response* FilmHandler::callback(Request* req)
     elements["year"] = req->getBodyParam("year");
     elements["rate"] = req->getBodyParam("rate");
     elements["price"] = req->getBodyParam("price");
+    int user_id = stoi(req->getSessionId());
     if(valid.add_film_validity(elements))
     {
         try
         {
             network->add_film(elements["name"], stoi(elements["year"]), stoi(elements["length"]), 
-                                stoi(elements["price"]), elements["summary"], elements["director"]);
-            map<string, string> options; 
-            if (network->find_logged_in_user()->check_publsher())
-                return show.show_films(true, network->show_published_film(options));
-            return show.show_films(false, network->search(options));
+                                stoi(elements["price"]), elements["summary"], elements["director"], user_id);
+            map<string, string> options;
+            return show.show_films(network->find_logged_in_user(user_id)->check_publsher(), network->show_published_film(options, user_id), user_id);
         }
         catch(BadRequest e)
         {

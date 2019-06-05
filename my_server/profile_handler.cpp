@@ -13,7 +13,8 @@ Response* ProfileHandler::callback(Request* req)
     try
     {
         map<string, string> options;
-        return show.show_films(PROFILE, network->show_bought_films(options));
+        int user_id = stoi(req->getSessionId());
+        return show.show_films(PROFILE, network->show_bought_films(options, user_id), user_id);
     }
     catch(BadRequest e)
     {

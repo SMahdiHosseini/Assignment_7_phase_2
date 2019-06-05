@@ -11,8 +11,11 @@ Response* LogoutHandler::callback(Request* req)
 {
     try
     {
-        network->logout();
-        return Response::redirect("/");
+        int user_id = stoi(req->getSessionId());
+        network->logout(user_id);
+        Response* res = new Response;
+        res->setSessionId("SID");
+        return res->redirect("/");
     }
     catch(BadRequest e)
     {

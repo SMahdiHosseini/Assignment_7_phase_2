@@ -14,7 +14,8 @@ Response* IncreaseHandler::callback(Request* req)
     try
     {
         int money = stoi(req->getBodyParam("money"));
-        network->increase_money(money);
+        int user_id = stoi(req->getSessionId());
+        network->increase_money(money, user_id);
         return Response::redirect("/profile");
     }
     catch(BadRequest e)

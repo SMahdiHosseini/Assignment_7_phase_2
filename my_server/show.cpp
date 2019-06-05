@@ -21,6 +21,11 @@ string Show::set_nav(int method)
         << "        <form action='/logout' method='POST'>" << endl
         << "            <button class='btn btn-danger' type='submit'>Logout</button>" << endl
         << "        </form>" << endl
+        << "    </ul>" << endl
+        << "    <ul class='navbar-nav'>" << endl
+        << "        <form action='/home' method='POST'>" << endl
+        << "            <button class='btn btn-success' type='submit'>Home</button>" << endl
+        << "        </form>" << endl
         << "    </ul>" << endl;
     if(method == PUBLISHED)
     {
@@ -31,7 +36,7 @@ string Show::set_nav(int method)
         << "        </form>" << endl
         << "    </ul>" << endl;
     }
-    if(method == USER)
+    if(method == USER || method == PUBLISHED)
     {        
         nav_bar
         << "    <ul class='navbar-nav'>" << endl
@@ -63,7 +68,32 @@ string Show::set_table_title(int method)
         head
             << "<h2>Bought Films</h2>" << endl;
     }
+    if(method == RECOMMEND)
+    {
+        head
+            << "<h2>Recommendation films</h2>" << endl;
+    }
+    if(method == DETAILS)
+    {
+        head
+            << "<h2>Details</h2>" << endl;
+    }   
     return head.str();
+}
+
+string Show::form(string action, string film_id)
+{
+    ostringstream body;
+    body
+        << "<form action='/" << action << "' method='POST'>" << endl
+        << "    <div class='input-group'>" <<endl
+        << "        <span class='input-group-btn'>" << endl
+        << "                <button class='btn btn-warning' type='submit'>" << action << "</button>" << endl
+        << "            </span>"
+        << "        <input type='hidden' class='form-control' id='" << action << "' name='film_id' value='" << film_id << "'>" << endl
+        << "    </div>" << endl
+        << "</form>" << endl;
+    return body.str();
 }
 
 string Show::set_table_body(int method, vector<string> film)
@@ -88,18 +118,11 @@ string Show::set_table_body(int method, vector<string> film)
         << "    <td>" << film[5] << "</td>" << endl
         << "    <td>" << film[6] << "</td>" << endl;
     if(method == PUBLISHED)
-    {
-        body
-            << "    <td>" << endl
-            << "        <form action='/delete_film' method='POST'>" << endl
-            << "            <div class='input-group'>" <<endl
-            << "                <span class='input-group-btn'>" << endl
-            << "                        <button class='btn btn-warning' type='submit'>DELETE</button>" << endl
-            << "                    </span>"
-            << "                <input type='hidden' class='form-control' id='delete_film' name='film_id' value='" << film[0] << "'>" << endl
-            << "            </div>" << endl
-            << "        </form>" << endl
-            << "    </td>" << endl;
+    {    
+        body << "    <td>" << endl;
+        body << form("delete", film[0]);
+        body << "    </td>" << endl;
+
     }
     body
         << "</tr>" << endl;
@@ -181,9 +204,10 @@ string Show::table(int method, vector<vector<string>> films)
     return table.str();
 }
 
-Response* Show::show_films(int method, vector<vector<string>> films)
+Response* Show::show_films(int method, vector<vector<string>> films, int user_id)
 {
     Response *res = new Response;
+    res->setSessionId(to_string(user_id));
     res->setHeader("Content-Type", "text/html");
     ostringstream body;
     body << "<html>" << endl;
@@ -198,4 +222,75 @@ Response* Show::show_films(int method, vector<vector<string>> films)
     body <<"</html>" << endl;
     res->setBody(body.str());
     return res;
+}
+
+Response* Show::show_film_details(int method, vector<vector<string>> recom_films, vector<string> details, int user_id)
+{
+    Response* res = new Response;
+    res->setSessionId(to_string(user_id));
+    res->setHeader("Content-Type", "text/html");
+    ostringstream body;
+    body << "<html>" << endl;
+    body << header();
+    body << "<body>" << endl;
+    body << set_nav(method);
+    body << show_details(details);
+    body << table(RECOMMEND, recom_films);
+    body << "</body>" << endl;
+    body << "</html>" << endl;
+    res->setBody(body.str());
+    return res;
+}
+
+string Show::show_details(vector<string> details)
+{
+    ostringstream table;
+    table << "<div class='container' style='padding-top: 10%'>" << endl;
+    table << set_table_title(DETAILS);
+    table 
+        << "    <table class='table table-dark table-striped'>" << endl
+
+        << "        <tr>" << endl
+        << "            <th>Film Id</th>" << endl
+        << "            <td>" << details[1] << "</td>" << endl
+        << "        </tr>" << endl
+
+        << "        <tr>" << endl                           
+        << "            <th>Name</th>" << endl
+        << "            <td>" << details[0] << "</td>" << endl
+        << "        </tr>" << endl
+
+        << "        <tr>" << endl
+        << "            <th>Director</th>" << endl
+        << "            <td>" << details[2] << "</td>" << endl
+        << "        </tr>" << endl
+
+        << "        <tr>" << endl
+        << "            <th>Length</th>" << endl
+        << "            <td>" << details[3] << "</td>" << endl
+        << "        </tr>" << endl
+
+        << "        <tr>" << endl
+        << "            <th>Year</th>" << endl
+        << "            <td>" << details[4] << "</td>" << endl
+        << "        </tr>" << endl
+
+        << "        <tr>" << endl
+        << "            <th>Summary</th>" << endl
+        << "            <td>" << details[5] << "</td>" << endl
+        << "        </tr>" << endl
+
+        << "        <tr>" << endl
+        << "            <th>Rate</th>" << endl
+        << "            <td>" << details[6] << "</td>" << endl
+        << "        </tr>" << endl
+
+        << "        <tr>" << endl
+        << "            <th>Price</th>" << endl
+        << "            <td>" << details[7] << "</td>" << endl
+        << "        </tr>" << endl
+        << "  </table>" << endl;
+    table << form("buy", details[1]);
+    table << "</div>" << endl;
+    return table.str();
 }

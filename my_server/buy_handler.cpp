@@ -12,8 +12,9 @@ Response* BuyHandler::callback(Request* req)
     try
     {
         int film_id = stoi(req->getBodyParam("film_id"));
-        network->buy_film(film_id);
-        return Response::redirect("/profile");
+        int user_id = stoi(req->getSessionId());
+        network->buy_film(film_id, user_id);
+        return Response::redirect("/details");
     }
     catch(BadRequest e)
     {

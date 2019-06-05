@@ -24,12 +24,12 @@ Response* SignupHandler::callback(Request* req)
     {   
         try
         {
-            network->signup(elements["email"], elements["username"], elements["password"], 
+            int user_id = network->signup(elements["email"], elements["username"], elements["password"], 
                         stoi(elements["age"]), valid.check_publisher(elements["publisher"]));
             map<string, string> options; 
-            if (network->find_logged_in_user()->check_publsher())
-                return show.show_films(true, network->show_published_film(options));
-            return show.show_films(false, network->search(options));
+            if (network->find_logged_in_user(user_id)->check_publsher())
+                return show.show_films(true, network->show_published_film(options, user_id), user_id);
+            return show.show_films(false, network->search(options), user_id);
         }
         catch(BadRequest e)
         {

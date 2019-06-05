@@ -13,9 +13,10 @@ Response* DetailsHandler::callback(Request* req)
     {
         map<string, string> options;
         int film_id = stoi(req->getBodyParam("film_id"));
+        int user_id = stoi(req->getSessionId());
         vector<string> details = network->show_film_details(film_id);
-        vector<vector<string>> recom_films = network->show_recom_film(film_id);
-        return show.show_film_details(network->find_logged_in_user()->check_publsher(), recom_films, details);
+        vector<vector<string>> recom_films = network->show_recom_film(film_id, user_id);
+        return show.show_film_details(network->find_logged_in_user(user_id)->check_publsher(), recom_films, details, user_id);
     }
     catch(BadRequest e)
     {

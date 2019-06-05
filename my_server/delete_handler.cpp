@@ -14,8 +14,9 @@ Response* DeleteHandler::callback(Request* req)
     {
         map<string, string> options;
         int film_id = stoi(req->getBodyParam("film_id"));
-        network->delete_film(film_id);
-        return show.show_films(PUBLISHED, network->show_published_film(options));
+        int user_id = stoi(req->getSessionId());
+        network->delete_film(film_id, user_id);
+        return show.show_films(PUBLISHED, network->show_published_film(options, user_id), user_id);
     }
     catch(BadRequest e)
     {
