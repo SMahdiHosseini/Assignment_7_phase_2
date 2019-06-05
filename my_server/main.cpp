@@ -18,17 +18,17 @@ using namespace std;
 int main(int argc, char const *argv[])
 {
     Network* network = new Network();
+
     MyServer server(argc > 1 ? atoi(argv[1]) : 5000);
     try
     {
         server.setNotFoundErrPage("static/404.html");
 
-
         server.get("/1.jpg", new ShowImage("static/1.jpg"));
         server.get("/", new ShowPage("static/home.html"));
-
+    
         server.get("/login", new ShowPage("static/home.html"));
-        server.post("/login", new LoginHandler(network));
+        server.post("/login", new LoginHandler(network));        
 
         server.get("/signup", new ShowPage("static/signup.html"));
         server.post("/signup", new SignupHandler(network));
@@ -52,12 +52,10 @@ int main(int argc, char const *argv[])
 
         server.post("/home", new HomeHandler(network));
 
-        server.run();;
+        server.run();
     }
-    catch(Server::Exception e)
+    catch(MyServer::Exception e)
     {
-        // server.post("/error", new ShowPage("static/errore_page.html"));
-        // cerr << e.getMessage() << endl;
-        cout << "werfwerfwrferf\n";
+        cerr << e.getMessage() << endl;
     }
 }
